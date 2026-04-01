@@ -1,0 +1,65 @@
+﻿# Visual Studio / IDE
+.vs/
+.idea/
+.vscode/
+
+# Build outputs
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Package management
+packages/
+*.nupkg
+project.lock.json
+package-lock.json
+
+# Publishing
+*.publish/
+publish/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Database
+*.mdf
+*.ldf
+*.mdb
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*~
+*.tmp
+*.temp
+*.cache
+*.pid
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+*.dbmd
+
+# Visual Studio Code
+*.code-workspace
+
+# Rider
+.idea/
+*.sln.iml
