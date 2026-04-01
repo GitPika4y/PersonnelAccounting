@@ -19,7 +19,7 @@ public class Resource<T>
         {
             IsSuccess = false,
             Message = message,
-            ExceptionMessage =  exception.Message
+            ExceptionMessage =  exception.InnerException?.Message
         };
 }
 
@@ -37,6 +37,6 @@ public class Resource
         {
             IsSuccess = false,
             Message = message,
-            ExceptionMessage = exception.Message
+            ExceptionMessage = exception.InnerException?.Message
         };
 }

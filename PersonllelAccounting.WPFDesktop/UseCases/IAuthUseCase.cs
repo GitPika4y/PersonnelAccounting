@@ -6,4 +6,5 @@ namespace WPF_Desktop.UseCases;
 public interface IAuthUseCase
 {
     Task<Resource<User?>> SignInAsync(string username, string password);
+    Task<Resource<User?>> IdentifyUserAsync(string username);
 }

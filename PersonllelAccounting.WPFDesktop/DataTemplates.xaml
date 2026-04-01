@@ -5,23 +5,26 @@
                     xmlns:vmModal="clr-namespace:WPF_Desktop.ViewModels.Modal"
                     xmlns:viewsModal="clr-namespace:WPF_Desktop.Views.Modal"
                     xmlns:vmAdmin="clr-namespace:WPF_Desktop.ViewModels.Admin"
-                    xmlns:viewsAdmin="clr-namespace:WPF_Desktop.Views.Admin"
-                    >
+                    xmlns:viewsAdmin="clr-namespace:WPF_Desktop.Views.Admin">
 
-    <!-- AUTH -->
+    <!-- MAIN -->
     <DataTemplate DataType="{x:Type vm:AuthViewModel}">
         <views:AuthView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:MainViewModel}">
+        <views:MainView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:SideBarViewModel}">
+        <views:SideBarView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+        <views:SettingsView/>
+    </DataTemplate>
+
     <!-- ADMIN -->
-    <DataTemplate DataType="{x:Type vmAdmin:AdminViewModel}">
-        <viewsAdmin:AdminView/>
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type vmAdmin:AdminSideBarViewModel}">
-        <viewsAdmin:AdminSideBarView />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type vmAdmin:AdminUserViewModel}">
         <viewsAdmin:AdminUserView />
     </DataTemplate>
@@ -49,5 +52,13 @@
     <!-- MODALS -->
     <DataTemplate DataType="{x:Type vmModal:MessageModalViewModel}">
         <viewsModal:MessageModalView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmModal:ConfirmModalViewModel}">
+        <viewsModal:ConfirmModalView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmModal:AccountPickerModalViewModel}">
+        <viewsModal:AccountPickerModalView/>
     </DataTemplate>
 </ResourceDictionary>

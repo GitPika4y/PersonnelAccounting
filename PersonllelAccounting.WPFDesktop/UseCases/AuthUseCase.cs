@@ -10,6 +10,11 @@ public class AuthUseCase(
 {
     public async Task<Resource<User?>> SignInAsync(string username, string password)
     {
-        return await SafeCallAsync(() => service.AuthenticateAsync(username, password));
+        return await SafeCallAsync(() => service.AuthenticateUserAsync(username, password));
+    }
+
+    public async Task<Resource<User?>> IdentifyUserAsync(string username)
+    {
+        return await SafeCallAsync(() => service.IdentifyUserAsync(username));
     }
 }

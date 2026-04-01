@@ -18,9 +18,12 @@ public partial class AuthView : UserControl
             vm.Password = HiddenPasswordBox.Password;
     }
 
-    private void AuthView_OnLoaded(object sender, RoutedEventArgs e)
+    private async void AuthView_OnLoaded(object sender, RoutedEventArgs e)
     {
         if (DataContext is AuthViewModel vm)
+        {
             vm.PasswordVisibilityToggled += () => HiddenPasswordBox.Password = vm.Password;
+            await vm.InitializeAsync();
+        }
     }
 }

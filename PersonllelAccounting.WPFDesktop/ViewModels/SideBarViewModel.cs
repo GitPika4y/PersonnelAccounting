@@ -1,18 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
 using WPF_Desktop.Services;
+using WPF_Desktop.ViewModels.Admin;
 
-namespace WPF_Desktop.ViewModels.Admin;
+namespace WPF_Desktop.ViewModels;
 
-public partial class AdminSideBarViewModel(IServiceProvider services): ViewModelBase
+public partial class SideBarViewModel(
+    IServiceProvider services,
+    ISessionService sessionService
+    ): ViewModelBase
 {
     public NavigationService NavigationService { get; } = new(services);
-
-    [RelayCommand]
-    private void Navigate(Type viewModelType)
-    {
-        NavigationService.Navigate(viewModelType);
-    }
+    public Data.Models.Auth.User CurrentUser => sessionService.GetCurrentUser();
 
     public IReadOnlyCollection<SideBarItem> SideBarItems =>
     [
@@ -20,4 +19,10 @@ public partial class AdminSideBarViewModel(IServiceProvider services): ViewModel
         new(PackIconKind.AccountGroupOutline, "Отделы", typeof(AdminDepartmentViewModel), NavigateCommand),
         new(PackIconKind.BadgeAccountHorizontalOutline, "Должности", typeof(AdminPositionViewModel), NavigateCommand),
     ];
+
+    [RelayCommand]
+    private void Navigate(Type viewModelType) => NavigationService.Navigate(viewModelType);
+
+    [RelayCommand]
+    private void OpenSettings() => NavigationService.Navigate<SettingsViewModel>();
 }

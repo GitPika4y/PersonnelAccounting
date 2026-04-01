@@ -13,9 +13,12 @@ public static class DiService
         // AUTH
         services.AddTransient<AuthViewModel>();
 
+        // MAIN
+        services.AddTransient<MainViewModel>();
+        services.AddTransient<SideBarViewModel>();
+        services.AddTransient<SettingsViewModel>();
+
         // ADMIN
-        services.AddTransient<AdminViewModel>();
-        services.AddTransient<AdminSideBarViewModel>();
         services.AddTransient<AdminUserViewModel>();
         services.AddTransient<AdminDepartmentViewModel>();
         services.AddTransient<AdminPositionViewModel>();
@@ -33,5 +36,6 @@ public static class DiService
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<IWindowService, WindowService>();
+        services.AddSingleton<IRememberMeService, RememberMeService>();
     }
 }

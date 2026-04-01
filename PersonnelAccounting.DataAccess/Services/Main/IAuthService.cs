@@ -5,5 +5,6 @@ namespace Data.Services.Main;
 
 public interface IAuthService
 {
-    Task<User?> AuthenticateAsync(string login, string password);
+    Task<User?> AuthenticateUserAsync(string login, string password);
+    Task<User?> IdentifyUserAsync(string login);
 }

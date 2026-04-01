@@ -28,7 +28,7 @@ public partial class AdminUserViewModel: ViewModelBase
     private async Task UpdateUserCollection()
     {
         var resource = await _useCase.GetAll();
-        HandleResource(
+        await HandleResource(
             resource,
             users => UpdateObservableCollection(Users, users.ToList()));
     }
@@ -46,12 +46,12 @@ public partial class AdminUserViewModel: ViewModelBase
             case Resource<Data.Models.Auth.User> { IsSuccess: true, Data: not null } successResource:
             {
                 var resource = await _useCase.Add(successResource.Data);
-                HandleResourceMessage(resource, "Пользователь успешно добавлен");
+                await HandleResourceMessage(resource, "Пользователь успешно добавлен");
                 await UpdateUserCollection();
                 break;
             }
             case Resource<Data.Models.Auth.User> { IsSuccess: false } failureResource:
-                HandleResourceMessage(failureResource, "");
+                await HandleResourceMessage(failureResource, "");
                 break;
         }
     }
@@ -61,7 +61,7 @@ public partial class AdminUserViewModel: ViewModelBase
     {
         if (SelectedUser is null)
         {
-            ShowMessage("Редактирование невозможно", "Выберите пользователя чтобы редактировать");
+            await ShowMessage("Редактирование невозможно", "Выберите пользователя чтобы редактировать");
             return;
         }
 
@@ -72,12 +72,12 @@ public partial class AdminUserViewModel: ViewModelBase
             case Resource<Data.Models.Auth.User> { IsSuccess: true, Data: not null } successResource:
             {
                 var resource = await _useCase.Update(successResource.Data);
-                HandleResourceMessage(resource, "Пользователь успешно добавлен");
+                await HandleResourceMessage(resource, "Пользователь успешно добавлен");
                 await UpdateUserCollection();
                 break;
             }
             case Resource<Data.Models.Auth.User> { IsSuccess: false } failureResource:
-                HandleResourceMessage(failureResource, "");
+                await HandleResourceMessage(failureResource, "");
                 break;
         }
     }
