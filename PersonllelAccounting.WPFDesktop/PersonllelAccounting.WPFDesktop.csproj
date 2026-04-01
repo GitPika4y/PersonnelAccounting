@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <RootNamespace>WPF_Desktop</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
+      <PackageReference Include="MaterialDesignColors" Version="5.3.1" />
+      <PackageReference Include="MaterialDesignThemes" Version="5.3.1" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    </ItemGroup>
+    
+
+    <ItemGroup>
+      <ProjectReference Include="..\PersonnelAccounting.DataAccess\PersonnelAccounting.DataAccess.csproj" />
+    </ItemGroup>
+    
+
+    <ItemGroup>
+      <Folder Include="Views\User\" />
+    </ItemGroup>
+
+</Project>

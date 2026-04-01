@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.Admin.AdminDepartmentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <Grid Margin="40">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- TITLE -->
+        <TextBlock Grid.Row="0"
+                   Text="Отделы"
+                   Style="{StaticResource MaterialDesignDisplayMediumTextBlock}"
+                   FontSize="48"
+                   FontWeight="SemiBold"
+                   Margin="0 0 0 30"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   />
+
+        <!-- CONTENT -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Departments}"
+                  SelectedItem="{Binding SelectedDepartment}"
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  FontSize="22">
+            <DataGrid.ContextMenu>
+                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                    <MenuItem Header="Редактировать" Command="{Binding EditDepartmentCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="Id" Binding="{Binding Id}"/>
+                <DataGridTextColumn Width="3*" Header="Название" Binding="{Binding Title}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- ACTION_BUTTONS -->
+        <Grid Grid.Row="2"
+              Margin="0 30 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Добавить -->
+            <Button Grid.Column="0"
+                    Content="ДОБАВИТЬ"
+                    Command="{Binding AddDepartmentCommand}"
+                    Height="45"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Style="{StaticResource MaterialDesignRaisedButton}"/>
+
+            <!-- Обновить -->
+            <Button Grid.Column="2"
+                    Content="РЕДАКТИРОВАТЬ"
+                    Command="{Binding EditDepartmentCommand}"
+                    Height="45"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}"/>
+        </Grid>
+
+
+    </Grid>
+</UserControl>

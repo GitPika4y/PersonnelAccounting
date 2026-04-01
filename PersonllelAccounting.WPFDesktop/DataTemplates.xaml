@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:WPF_Desktop.ViewModels"
+                    xmlns:views="clr-namespace:WPF_Desktop.Views"
+                    xmlns:vmModal="clr-namespace:WPF_Desktop.ViewModels.Modal"
+                    xmlns:viewsModal="clr-namespace:WPF_Desktop.Views.Modal"
+                    xmlns:vmAdmin="clr-namespace:WPF_Desktop.ViewModels.Admin"
+                    xmlns:viewsAdmin="clr-namespace:WPF_Desktop.Views.Admin"
+                    >
+
+    <!-- AUTH -->
+    <DataTemplate DataType="{x:Type vm:AuthViewModel}">
+        <views:AuthView/>
+    </DataTemplate>
+
+    <!-- ADMIN -->
+    <DataTemplate DataType="{x:Type vmAdmin:AdminViewModel}">
+        <viewsAdmin:AdminView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmAdmin:AdminSideBarViewModel}">
+        <viewsAdmin:AdminSideBarView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmAdmin:AdminUserViewModel}">
+        <viewsAdmin:AdminUserView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmAdmin:AdminUserAddEditModalViewModel}">
+        <viewsAdmin:AdminUserAddEditModalView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmAdmin:AdminDepartmentViewModel}">
+        <viewsAdmin:AdminDepartmentView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmAdmin:AdminDepartmentAddEditModalViewModel}">
+        <viewsAdmin:AdminDepartmentAddEditModalView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmAdmin:AdminPositionViewModel}">
+        <viewsAdmin:AdminPositionView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmAdmin:AdminPositionAddEditModalViewModel}">
+        <viewsAdmin:AdminPositionAddEditModalView/>
+    </DataTemplate>
+
+    <!-- MODALS -->
+    <DataTemplate DataType="{x:Type vmModal:MessageModalViewModel}">
+        <viewsModal:MessageModalView/>
+    </DataTemplate>
+</ResourceDictionary>

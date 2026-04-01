@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.Admin.AdminDepartmentAddEditModalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+
+    <StackPanel Margin="15">
+        <TextBlock Text="{Binding ModalTitle}"
+                   HorizontalAlignment="Center"
+                   Margin="0 0 0 30"
+                   Style="{StaticResource MaterialDesignDisplayLargeTextBlock}"/>
+
+        <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 Margin="0 0 0 30"
+                 FontSize="24"
+                 md:HintAssist.Hint="Название отдела"/>
+
+        <Grid Margin="0 30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Content="{Binding ModalBtnText}"
+                    Command="{Binding SaveCommand}"
+                    Margin="0 0 10 0"
+                    Height="60"
+                    FontSize="24"
+                    />
+
+            <Button Grid.Column="1"
+                    Content="Назад"
+                    Command="{x:Static md:DialogHost.CloseDialogCommand}"
+                    Margin="10 0 0 0"
+                    FontSize="24"
+                    Height="60"
+                    Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
+        </Grid>
+    </StackPanel>
+</UserControl>
+

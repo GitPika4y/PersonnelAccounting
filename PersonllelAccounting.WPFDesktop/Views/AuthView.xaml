@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.AuthView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Loaded="AuthView_OnLoaded"
+             Background="LemonChiffon"
+             >
+
+    <md:Card Padding="20"
+             Style="{StaticResource MaterialDesignOutlinedCard}"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             >
+        <StackPanel>
+            <TextBlock Text="Добро пожаловать"
+                       Style="{StaticResource MaterialDesignDisplaySmallTextBlock}"/>
+
+            <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="10"
+                     FontSize="24"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                     md:HintAssist.Hint="Логин"/>
+
+            <Grid Margin="5 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="AUTO"/>
+                </Grid.ColumnDefinitions>
+
+                <PasswordBox Grid.Column="0"
+                             Name="HiddenPasswordBox"
+                             Margin="5 0"
+                             FontSize="24"
+                             PasswordChanged="HiddenPasswordBox_OnPasswordChanged"
+                             Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
+                             Visibility="{Binding IsPasswordVisible, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                             md:HintAssist.Hint="Пароль"/>
+
+                <TextBox Grid.Column="0"
+                           Margin="5 0"
+                           FontSize="24"
+                           Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                           Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                           Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                           md:HintAssist.Hint="Пароль"/>
+
+                <Button Grid.Column="1"
+                        Margin="5 0"
+                        Command="{Binding TogglePasswordVisibilityCommand}"
+                        Style="{StaticResource MaterialDesignIconButton}">
+                    <md:PackIcon Kind="{Binding TogglePasswordVisibilityContent}"
+                                 FontSize="24"/>
+                </Button>
+            </Grid>
+
+            <Button Content="Войти"
+
+                    Command="{Binding SignInCommand}"/>
+        </StackPanel>
+    </md:Card>
+
+</UserControl>
