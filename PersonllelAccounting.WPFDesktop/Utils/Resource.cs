@@ -4,7 +4,6 @@ public class Resource<T>
 {
     public bool IsSuccess { get; private set; }
     public T? Data { get; private set; }
-    public string? Message { get; private set; }
     public string? ExceptionMessage { get; private set; }
 
     public static Resource<T> Success(T? data) =>
@@ -18,7 +17,6 @@ public class Resource<T>
         new()
         {
             IsSuccess = false,
-            Message = message,
             ExceptionMessage =  exception.InnerException?.Message
         };
 }
@@ -26,7 +24,6 @@ public class Resource<T>
 public class Resource
 {
     public bool IsSuccess { get; private set; }
-    public string? Message { get; private set; }
     public string? ExceptionMessage { get; private set; }
 
     public static Resource Success() =>
@@ -36,7 +33,6 @@ public class Resource
         new()
         {
             IsSuccess = false,
-            Message = message,
             ExceptionMessage = exception.InnerException?.Message
         };
 }

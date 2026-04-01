@@ -47,7 +47,8 @@
                    Foreground="DarkGoldenrod"
                    FontSize="16"
                    TextDecorations="Underline"
-                   FontStyle="Italic">
+                   FontStyle="Italic"
+                   Cursor="Hand">
 
             <TextBlock.InputBindings>
                 <MouseBinding MouseAction="LeftClick"
