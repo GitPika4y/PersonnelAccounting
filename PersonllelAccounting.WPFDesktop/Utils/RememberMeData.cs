@@ -2,13 +2,15 @@
 
 public class RememberMeData(string login)
 {
+    private static DateTime CreateExpireDate() => DateTime.Now.AddDays(1);
+
     public string Login { get; } = login;
-    public DateTime ExpireDate { get; private set; } = DateTime.Now.AddDays(5);
+    public DateTime ExpireDate { get; private set; } = CreateExpireDate();
 
     public bool IsLogged => ExpireDate > DateTime.Now;
 
     public void Refresh()
     {
-        ExpireDate = DateTime.Now.AddDays(5);
+        ExpireDate = CreateExpireDate();
     }
 }
