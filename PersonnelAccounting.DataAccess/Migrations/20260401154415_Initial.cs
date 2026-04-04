@@ -65,9 +65,9 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Login = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -120,7 +120,7 @@ namespace Data.Migrations
                 columns: new[] { "Id", "Login", "Password", "Role", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("ed2f1ea9-3714-40db-a5b4-af4e099214d1"), "admin_", "$2a$11$OswhLeNo0PGwGSGnI0RwTONRZtZUfgw656L0CbJtjY0/L00pvpyea", "Admin", null },
+                    { new Guid("3ec860f5-bfd3-46d6-9168-2ef53050f121"), "admin", "$2a$11$OswhLeNo0PGwGSGnI0RwTONRZtZUfgw656L0CbJtjY0/L00pvpyea", "Admin", null },
                 });
 
             migrationBuilder.CreateIndex(
@@ -166,6 +166,12 @@ namespace Data.Migrations
                 name: "IX_Positions_Title",
                 table: "Positions",
                 column: "Title",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Login",
+                table: "Users",
+                column: "Login",
                 unique: true);
         }
 

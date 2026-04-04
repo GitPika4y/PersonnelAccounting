@@ -6,4 +6,6 @@
     <converters:BoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" Invert="True"/>
 
     <converters:EnumToDisplayNameConverter x:Key="EnumToDisplayNameConverter"/>
+
+    <converters:UsernameOrLoginConverter x:Key="UsernameOrLoginConverter"/>
 </ResourceDictionary>

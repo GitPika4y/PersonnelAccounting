@@ -18,7 +18,5 @@ public class AppDbContext(DbContextOptions<AppDbContext> options): DbContext(opt
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderConfiguration).Assembly);
-
-        base.OnModelCreating(modelBuilder);
     }
 }

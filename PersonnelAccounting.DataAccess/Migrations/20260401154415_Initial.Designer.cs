@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260326113111_Initial")]
+    [Migration("20260401154415_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace Data.Migrations
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -48,6 +48,9 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Login")
+                        .IsUnique();
+
                     b.ToTable("Users", t =>
                         {
                             t.HasCheckConstraint("CH_User_Role", "[Role] IN ('Admin','User')");
@@ -56,11 +59,11 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ed2f1ea9-3714-40db-a5b4-af4e099214d1"),
-                            Login = "admin_",
+                            Id = new Guid("3ec860f5-bfd3-46d6-9168-2ef53050f121"),
+                            Login = "admin",
                             Password = "$2a$11$OswhLeNo0PGwGSGnI0RwTONRZtZUfgw656L0CbJtjY0/L00pvpyea",
                             Role = "Admin"
-                        } );
+                        });
                 });
 
             modelBuilder.Entity("Data.Models.Main.Department", b =>

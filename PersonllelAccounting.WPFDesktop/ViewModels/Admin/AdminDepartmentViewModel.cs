@@ -28,7 +28,7 @@ public partial class AdminDepartmentViewModel: ViewModelBase
     private async Task UpdateDepartments()
     {
         var resource = await _useCase.GetAllAsync();
-        HandleResource(
+        await HandleResource(
             resource,
             departments => UpdateObservableCollection(Departments, departments.ToList())
             );
@@ -42,12 +42,12 @@ public partial class AdminDepartmentViewModel: ViewModelBase
         {
             case Resource<Department> {IsSuccess: true, Data: not null} successResource:
                 var resource = await _useCase.AddAsync(successResource.Data);
-                HandleResourceMessage(resource, "Отдел успешно добавлен");
+                await HandleResourceMessage(resource, "Отдел успешно добавлен");
                 await UpdateDepartments();
                 break;
 
             case Resource<Department> {IsSuccess: false, ExceptionMessage: not null} failedResource:
-                HandleResourceMessage(failedResource, "");
+                await HandleResourceMessage(failedResource, "");
                 break;
         }
     }
@@ -57,7 +57,7 @@ public partial class AdminDepartmentViewModel: ViewModelBase
     {
         if (SelectedDepartment is null)
         {
-            ShowMessage("Выберите отдел", "Не выбран отдел для редактирования");
+            await ShowMessage("Выберите отдел", "Не выбран отдел для редактирования");
             return;
         }
 
@@ -66,12 +66,12 @@ public partial class AdminDepartmentViewModel: ViewModelBase
         {
             case Resource<Department> {IsSuccess: true, Data: not null} successResource:
                 var resource = await _useCase.UpdateAsync(successResource.Data);
-                HandleResourceMessage(resource, "Редактирование прошло успешно");
+                await HandleResourceMessage(resource, "Редактирование прошло успешно");
                 await UpdateDepartments();
                 break;
 
             case Resource<Department> {IsSuccess: false, ExceptionMessage: not null} failedResource:
-                HandleResourceMessage(failedResource, "");
+                await HandleResourceMessage(failedResource, "");
                 break;
         }
     }

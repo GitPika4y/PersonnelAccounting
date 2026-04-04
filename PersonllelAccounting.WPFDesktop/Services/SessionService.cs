@@ -1,4 +1,5 @@
-﻿using Data.Models.Auth;
+﻿using System.Security.Cryptography;
+using Data.Models.Auth;
 
 namespace WPF_Desktop.Services;
 

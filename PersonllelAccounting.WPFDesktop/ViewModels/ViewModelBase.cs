@@ -8,9 +8,14 @@ namespace WPF_Desktop.ViewModels;
 
 public class ViewModelBase: ObservableValidator
 {
-    protected void ShowMessage(string title, string message)
+    protected async Task ShowMessage(string title, string message)
     {
-        ShowDialog(new MessageModalViewModel(title, message));
+        await ShowDialog(new MessageModalViewModel(title, message));
+    }
+
+    protected async Task ShowConfirmDialog(string title, string content, string? confirmButtonText = null, string? denyButtonText = null)
+    {
+        await ShowDialog(new ConfirmModalViewModel(title, content, confirmButtonText, denyButtonText));
     }
 
     protected async Task<object?> ShowDialog(ViewModelBase vm)
@@ -18,7 +23,7 @@ public class ViewModelBase: ObservableValidator
         return await DialogHost.Show(vm);
     }
 
-    protected void HandleResource<T>(Resource<T> resource, Action<T> onSuccess, Action? onError = null, bool showMessageOnError = true)
+    protected async Task HandleResource<T>(Resource<T> resource, Action<T> onSuccess, Action? onError = null, bool showMessageOnError = true)
     {
         switch (resource)
         {
@@ -28,37 +33,37 @@ public class ViewModelBase: ObservableValidator
 
             case {IsSuccess: false}:
                 if (showMessageOnError)
-                    ShowMessage("Ошибка", resource.ExceptionMessage ?? "Неизвестная ошибка");
+                    await ShowMessage("Ошибка", resource.ExceptionMessage ?? "Неизвестная ошибка");
 
                 onError?.Invoke();
                 break;
         }
     }
 
-    protected void HandleResourceMessage<T>(Resource<T> resource, string successMessage, string successTitle = "Успешно",
+    protected async Task HandleResourceMessage<T>(Resource<T> resource, string successMessage, string successTitle = "Успешно",
         string errorTitle = "Ошибка")
     {
         switch (resource.IsSuccess)
         {
             case true:
-                ShowMessage(successTitle, successMessage);
+                await ShowMessage(successTitle, successMessage);
                 break;
             case false:
-                ShowMessage(errorTitle, resource.ExceptionMessage ?? "Неизвестная ошибка");
+                await ShowMessage(errorTitle, resource.ExceptionMessage ?? "Неизвестная ошибка");
                 break;
         }
     }
 
-    protected void HandleResourceMessage(Resource resource, string successMessage, string successTitle = "Успешно",
+    protected async Task HandleResourceMessage(Resource resource, string successMessage, string successTitle = "Успешно",
         string errorTitle = "Ошибка")
     {
         switch (resource.IsSuccess)
         {
             case true:
-                ShowMessage(successTitle, successMessage);
+                await ShowMessage(successTitle, successMessage);
                 break;
             case false:
-                ShowMessage(errorTitle, resource.ExceptionMessage ?? "Неизвестная ошибка");
+                await ShowMessage(errorTitle, resource.ExceptionMessage ?? "Неизвестная ошибка");
                 break;
         }
     }

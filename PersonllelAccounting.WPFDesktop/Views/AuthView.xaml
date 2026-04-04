@@ -53,9 +53,23 @@
                 </Button>
             </Grid>
 
-            <Button Content="Войти"
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsRememberMeChecked}"
+                          Content="Запомнить меня"
+                          FontSize="22"
+                          Style="{StaticResource MaterialDesignSecondaryCheckBox}"
+                          Margin="0 0 10 0"/>
 
-                    Command="{Binding SignInCommand}"/>
+                <Button Content="Входили ранее?"
+                        Margin="10 0 0 0"
+                        Style="{StaticResource MaterialDesignFlatLightBgButton}"
+                        FontSize="18"
+                        Command="{Binding AuthenticateCommand}"/>
+            </StackPanel>
+
+            <Button Content="Войти"
+                    Command="{Binding SignInCommand}"
+                    Margin="0 10 0 0"/>
         </StackPanel>
     </md:Card>
 

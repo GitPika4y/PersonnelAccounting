@@ -8,7 +8,7 @@ namespace Data.Services.Main;
 
 public class AuthService(AppDbContext context): IAuthService
 {
-    public async Task<User?> AuthenticateAsync(string login, string password)
+    public async Task<User?> AuthenticateUserAsync(string login, string password)
     {
         var user = await IdentifyUserAsync(login);
 
@@ -19,6 +19,6 @@ public class AuthService(AppDbContext context): IAuthService
         return isPasswordCorrect ? user : null;
     }
 
-    private async Task<User?> IdentifyUserAsync(string login) =>
+    public async Task<User?> IdentifyUserAsync(string login) =>
         await context.Users.FirstOrDefaultAsync(u => u.Login == login);
 }

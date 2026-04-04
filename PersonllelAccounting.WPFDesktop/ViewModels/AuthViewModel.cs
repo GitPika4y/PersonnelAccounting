@@ -1,24 +1,24 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Windows;
+﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Data.Models.Auth;
 using MaterialDesignThemes.Wpf;
+using Microsoft.IdentityModel.Tokens;
 using WPF_Desktop.Services;
 using WPF_Desktop.UseCases;
+using WPF_Desktop.Utils;
 using WPF_Desktop.ViewModels.Admin;
-using WPF_Desktop.ViewModels.User;
 
 namespace WPF_Desktop.ViewModels;
 
 public partial class AuthViewModel(
     IAuthUseCase useCase,
     INavigationService navigationService,
-    ISessionService sessionService
-    )
+    ISessionService sessionService,
+    IRememberMeService rememberMeService)
     : ViewModelBase
 {
+    private bool _isLogged;
+
     [ObservableProperty]
     [Required(ErrorMessage = "Обязательное поле")]
     [NotifyCanExecuteChangedFor(nameof(SignInCommand))]
@@ -34,39 +34,42 @@ public partial class AuthViewModel(
     [NotifyPropertyChangedFor(nameof(TogglePasswordVisibilityContent))]
     private bool _isPasswordVisible;
 
+    [ObservableProperty] private bool _isRememberMeChecked;
+
     public PackIconKind TogglePasswordVisibilityContent => IsPasswordVisible ? PackIconKind.Eye : PackIconKind.EyeClosed;
-    public event Action PasswordVisibilityToggled;
+    public event Action? PasswordVisibilityToggled;
+
+    public async Task InitializeAsync()
+    {
+        await Authenticate();
+    }
 
     private bool CanSignIn() => CheckProperties();
 
     [RelayCommand(CanExecute = nameof(CanSignIn))]
     private async Task SignIn()
     {
-        var resource = await useCase.SignInAsync(Login, Password);
+        var resource = _isLogged
+            ? await useCase.IdentifyUserAsync(Login)
+            : await useCase.SignInAsync(Login, Password);
         switch(resource)
         {
             case { IsSuccess: true, Data: not null }:
                 var user = resource.Data;
                 sessionService.SetUser(user);
-                switch (user.Role)
-                {
-                    case UserRole.Admin:
-                        navigationService.Navigate<AdminViewModel>();
-                        break;
-                    case UserRole.User:
-                        navigationService.Navigate<UserViewModel>();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+
+                if (IsRememberMeChecked)
+                    rememberMeService.Save(new RememberMeData(Login));
+
+                navigationService.Navigate<MainViewModel>();
                 break;
 
             case { IsSuccess: true, Data: null }:
-                ShowMessage("Вход не выполнен", "Неверные Логин или Пароль");
+                await ShowMessage("Вход не выполнен", "Неверные Логин или Пароль");
                 break;
 
             case { IsSuccess: false, ExceptionMessage: not null }:
-                ShowMessage("Ошибка", resource.ExceptionMessage);
+                await ShowMessage("Ошибка", resource.ExceptionMessage);
                 break;
         }
     }
@@ -76,5 +79,35 @@ public partial class AuthViewModel(
     {
         IsPasswordVisible = !IsPasswordVisible;
         PasswordVisibilityToggled?.Invoke();
+    }
+
+    [RelayCommand]
+    private async Task Authenticate()
+    {
+        var data = rememberMeService.Load();
+        if (data is null || data.Count == 0)
+        {
+            await ShowMessage("Пусто", "Последних входов не обнаружено");
+            return;
+        }
+
+        var selected = await ShowDialog(new Modal.AccountPickerModalViewModel(data));
+
+        if (selected is not RememberMeItem rememberMeItem)
+            return;
+
+        if (rememberMeItem.ReadyToDelete)
+        {
+            rememberMeService.RemoveItem(rememberMeItem.Data);
+            return;
+        }
+
+        Login = rememberMeItem.Data.Login;
+
+        if (rememberMeItem.Data.IsLogged)
+        {
+            _isLogged = true;
+            await SignIn();
+        }
     }
 }

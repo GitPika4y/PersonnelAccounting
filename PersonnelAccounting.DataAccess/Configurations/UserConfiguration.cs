@@ -26,8 +26,8 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
             {
                 Id = Guid.NewGuid(),
                 Role = UserRole.Admin,
-                Login = "admin_",
-                Password = BCrypt.Net.BCrypt.EnhancedHashPassword("admin123")
+                Login = "admin",
+                Password = "$2a$11$OswhLeNo0PGwGSGnI0RwTONRZtZUfgw656L0CbJtjY0/L00pvpyea" // admin123
             });
     }
 }
