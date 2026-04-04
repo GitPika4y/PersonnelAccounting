@@ -22,12 +22,15 @@
                                     Margin="0 10"
                                     Command="{Binding DataContext.LogInCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
-                                    Style="{StaticResource MaterialDesignPaperButton}">
+                                    Style="{StaticResource MaterialDesignPaperButton}"
+                                    Height="Auto"
+                                    HorizontalContentAlignment="Stretch">
                             <StackPanel>
                                 <TextBlock Text="{Binding Login}"
                                            FontSize="18"/>
                                 <TextBlock Text="Вход не выполнен"
-                                           Visibility="{Binding IsLogged, Converter={StaticResource InvertBoolToVisibilityConverter}}"/>
+                                           Visibility="{Binding IsLogged, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                           FontSize="12"/>
                             </StackPanel>
                         </Button>
 

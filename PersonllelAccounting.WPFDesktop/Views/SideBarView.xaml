@@ -70,7 +70,7 @@
                 <Button Grid.Column="1"
                         Style="{StaticResource MaterialDesignOutlinedDarkButton}"
                         Margin="10 0"
-                        Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Command="{Binding NavigateCommand}"
                         CommandParameter="{x:Type localVm:SettingsViewModel}"
                         MinWidth="30"
                         MinHeight="30">
