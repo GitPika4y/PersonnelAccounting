@@ -30,7 +30,7 @@ public partial class AdminDepartmentViewModel: ViewModelBase
         var resource = await _useCase.GetAllAsync();
         await HandleResource(
             resource,
-            departments => UpdateObservableCollection(Departments, departments.ToList())
+            departments => UpdateObservableCollection(Departments, departments)
             );
     }
 

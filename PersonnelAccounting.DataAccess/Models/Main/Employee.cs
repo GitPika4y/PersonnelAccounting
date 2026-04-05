@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 namespace Data.Models.Main;
 
 [Index(nameof(PhoneNumber), IsUnique = true)]
-[Index(nameof(Passport), IsUnique = true)]
 [Index(nameof(Inn), IsUnique = true)]
 public class Employee: EntityModel
 {
@@ -14,9 +13,21 @@ public class Employee: EntityModel
     public required DateTime BirthDate { get; set; }
     public required string PhoneNumber { get; set; }
     public required string Inn { get; set; }
-    public required string Passport { get; set; }
+    public required EmployeeGender Gender { get; set; }
+    public Guid PassportId { get; set; }
+    public Guid EducationId { get; set; }
 
-    public virtual EmployeeStatus Status
+    public virtual EmployeePassport Passport { get; set; } = null!;
+    public virtual EmployeeEducation Education { get; set; } = null!;
+    public virtual ICollection<Order> Orders { get; set; } = [];
+
+    public string FullName => $"{LastName} {FirstName} {MiddleName}";
+
+    public bool IsWorking => Orders.Count != 0
+                             && Orders.LastOrDefault(o => o.Type is OrderType.Hire or OrderType.Fire)
+                                 ?.Type is OrderType.Hire;
+
+    public EmployeeStatus Status
     {
         get
         {
@@ -24,7 +35,6 @@ public class Employee: EntityModel
                 return EmployeeStatus.NotWorking;
 
             var lastActiveOrder = Orders
-                .Where(o => o.Status is OrderStatus.Active)
                 .OrderByDescending(o => o.StartDate)
                 .Take(1)
                 .FirstOrDefault();
@@ -46,5 +56,16 @@ public class Employee: EntityModel
         }
     }
 
-    public virtual ICollection<Order> Orders { get; set; } = [];
+    public DateTime? InWorkSince => Orders.LastOrDefault(o => o.Type is OrderType.Hire)
+        ?.StartDate;
+
+    public DateTime? InWorkUntil => Orders.LastOrDefault(o => o.Type is OrderType.Hire)
+        ?.EndDate;
+
+    public Position? Position => Orders.LastOrDefault(o => o.Type is OrderType.Hire)
+        ?.HirePosition;
+
+    public Order? HireOrder => Orders.LastOrDefault(o => o.Type is OrderType.Hire);
+
+    public Order? FireOrder => Orders.LastOrDefault(o => o.Type is OrderType.Fire);
 }

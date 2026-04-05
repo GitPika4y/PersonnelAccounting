@@ -68,7 +68,7 @@ public class ViewModelBase: ObservableValidator
         }
     }
 
-    protected void UpdateObservableCollection<T>(ObservableCollection<T> collection, ICollection<T> source)
+    protected void UpdateObservableCollection<T>(ObservableCollection<T> collection, IReadOnlyCollection<T> source)
     {
         collection.Clear();
         foreach (var item in source)

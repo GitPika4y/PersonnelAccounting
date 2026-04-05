@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.OrderAddModalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
+    <StackPanel Margin="20">
+        <!-- TITLE -->
+        <TextBlock Text="Создать приказ"
+                   Style="{StaticResource MaterialDesignDisplaySmallTextBlock}"
+                   Margin="0 10"
+                   HorizontalAlignment="Center"/>
+
+        <components:KeyValueBlock Key="Для"
+                                  Value="{Binding SelectedEmployee.FullName}"
+                                  Margin="0 10"
+                                  FontSize="16"/>
+
+        <!-- EMPLOYEES -->
+        <Expander Header="Сотрудники">
+            <!-- TODO PAGINATION -->
+            <components:PaginationControl>
+                <DataGrid ItemsSource="{Binding Employees}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status, Converter={StaticResource EnumToDisplayNameConverter}}"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </components:PaginationControl>
+        </Expander>
+
+
+    </StackPanel>
+</UserControl>

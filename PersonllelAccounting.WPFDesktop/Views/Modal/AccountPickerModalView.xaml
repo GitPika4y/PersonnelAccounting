@@ -47,7 +47,7 @@
 
         <TextBlock Text="Авторизоваться"
                    TextAlignment="Right"
-                   Foreground="DarkGoldenrod"
+                   Foreground="{StaticResource MaterialDesignShadowBrush}"
                    FontSize="16"
                    TextDecorations="Underline"
                    FontStyle="Italic"

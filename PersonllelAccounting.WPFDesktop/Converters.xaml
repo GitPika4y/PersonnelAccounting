@@ -8,4 +8,13 @@
     <converters:EnumToDisplayNameConverter x:Key="EnumToDisplayNameConverter"/>
 
     <converters:UsernameOrLoginConverter x:Key="UsernameOrLoginConverter"/>
+
+    <converters:NullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" Invert="True"/>
+
+    <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+    <converters:NullToBoolConverter x:Key="NotNullToBoolConverter" Invert="True"/>
+
+    <converters:MultiEqualityConverter x:Key="EqualityConverter"/>
+    <converters:MultiEqualityConverter x:Key="InvertEqualityConverter" Invert="True"/>
 </ResourceDictionary>

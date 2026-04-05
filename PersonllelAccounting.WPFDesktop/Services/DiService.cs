@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WPF_Desktop.UseCases;
+using WPF_Desktop.Utils;
 using WPF_Desktop.ViewModels;
 using WPF_Desktop.ViewModels.Admin;
 using WPF_Desktop.ViewModels.User;
@@ -29,11 +30,15 @@ public static class DiService
         services.AddScoped<IPositionUseCase, PositionUseCase>();
 
         // USER
-        services.AddTransient<UserViewModel>();
+        services.AddTransient<UserEmployeeViewModel>();
+        services.AddTransient<UserOrderViewModel>();
+        services.AddTransient<EmployeeDetailViewModel>();
+
+        services.AddScoped<IEmployeeUseCase, EmployeeUseCase>();
 
         // SINGLETONS
         services.AddSingleton<MainWindow>();
-        services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<NavigationRegistry>();
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<IWindowService, WindowService>();
         services.AddSingleton<IRememberMeService, RememberMeService>();

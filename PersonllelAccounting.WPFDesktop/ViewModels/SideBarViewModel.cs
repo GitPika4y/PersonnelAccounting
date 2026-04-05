@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using Data.Models.Auth;
 using MaterialDesignThemes.Wpf;
 using WPF_Desktop.Services;
+using WPF_Desktop.Utils;
 using WPF_Desktop.ViewModels.Admin;
+using WPF_Desktop.ViewModels.User;
 
 namespace WPF_Desktop.ViewModels;
 
@@ -22,7 +24,8 @@ public partial class SideBarViewModel: ViewModelBase
         {
             UserRole.User ,
             [
-
+                new SideBarItem(PackIconKind.AccountTie, "Сотрудники", typeof(UserEmployeeViewModel)),
+                new SideBarItem(PackIconKind.FileSign, "Приказы", typeof(UserOrderViewModel))
             ]
         }
     };
@@ -35,10 +38,11 @@ public partial class SideBarViewModel: ViewModelBase
 
     public SideBarViewModel(
         IServiceProvider services,
-        ISessionService sessionService)
+        ISessionService sessionService,
+        NavigationRegistry navigationRegistry)
     {
         CurrentUser = sessionService.GetCurrentUser();
-        NavigationService = new NavigationService(services);
+        NavigationService = navigationRegistry.Get(NavigationRegion.MainView);
 
         var userRole = CurrentUser.Role;
         UpdateObservableCollection(SideBarItems, _sideBarItems[userRole]);

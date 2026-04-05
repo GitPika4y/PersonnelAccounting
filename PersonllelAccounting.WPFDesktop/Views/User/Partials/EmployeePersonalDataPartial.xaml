@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.Partials.EmployeePersonalDataPartial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0 0 0 10">
+            <components:KeyValueHorizontalGrid Key="Таб №"
+                                      Value="{Binding Employee.Id}"
+                                      Margin="0 0 10 0"/>
+
+            <components:KeyValueHorizontalGrid Key="Пол"
+                                      Value="{Binding Employee.Gender,
+                                            Converter={StaticResource EnumToDisplayNameConverter}}"
+                                      Margin="10 0 0 0"/>
+        </StackPanel>
+
+        <Grid Margin="0 0 0 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <components:KeyValueVerticalGrid Grid.Column="0"
+                                      Key="Фамилия"
+                                      Value="{Binding Employee.LastName}"
+                                      Margin="0 0 10 0"/>
+
+            <components:KeyValueVerticalGrid Grid.Column="1"
+                                      Key="Имя"
+                                      Value="{Binding Employee.FirstName}"
+                                      Margin="10 0"/>
+
+            <components:KeyValueVerticalGrid Grid.Column="2"
+                                      Key="Отчество"
+                                      Value="{Binding Employee.MiddleName}"
+                                      Margin="10 0 0 0"/>
+        </Grid>
+
+        <components:KeyValueHorizontalGrid Key="Дата рождения"
+                                  Value="{Binding Employee.BirthDate,
+                                        StringFormat={}{0:dd.MM.yyyy}}"
+                                  Margin="0 0 0 10"/>
+
+        <components:KeyValueHorizontalGrid Key="Телефон"
+                                  Value="{Binding Employee.PhoneNumber}"/>
+    </StackPanel>
+</UserControl>

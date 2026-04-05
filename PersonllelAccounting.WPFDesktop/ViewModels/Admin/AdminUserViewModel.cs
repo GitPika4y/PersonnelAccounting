@@ -30,7 +30,7 @@ public partial class AdminUserViewModel: ViewModelBase
         var resource = await _useCase.GetAll();
         await HandleResource(
             resource,
-            users => UpdateObservableCollection(Users, users.ToList()));
+            users => UpdateObservableCollection(Users, users));
     }
 
     private bool CanEdit() => SelectedUser is not null && _sessionService.GetCurrentUser().Id != SelectedUser.Id;

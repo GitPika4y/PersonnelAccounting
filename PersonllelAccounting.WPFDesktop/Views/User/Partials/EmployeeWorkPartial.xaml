@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.Partials.EmployeeWorkPartial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0 0 0 10">
+            <components:KeyValueHorizontalGrid Key="Принят на работу с"
+                                      Value="{Binding Employee.InWorkSince}"
+                                      UseTextBox="True"
+                                      Margin="0 0 10 0"/>
+
+            <components:KeyValueHorizontalGrid Key="по"
+                                      Value="{Binding Employee.InWorkUntil}"
+                                      UseTextBox="True"
+                                      Margin="10 0 0 0"/>
+        </StackPanel>
+
+        <components:KeyValueHorizontalGrid Key="Должность"
+                                  Value="{Binding Employee.Position.Title}"
+                                  UseTextBox="True"
+                                  Margin="0 0 0 10"/>
+
+        <components:KeyValueHorizontalGrid Key="Ставка"
+                                  Value="{Binding Employee.Position.Salary}"
+                                  UseTextBox="True"
+                                  Margin="0 0 0 10"/>
+
+        <components:KeyValueVerticalGrid Key="Основнание приема на работу"
+                                  UseTextBox="True">
+            <components:KeyValueVerticalGrid.Value>
+                <MultiBinding StringFormat="приказ № {0} от {1}">
+                    <Binding Path="Employee.HireOrder.Id"/>
+                    <Binding Path="Employee.HireOrder.Date"/>
+                </MultiBinding>
+            </components:KeyValueVerticalGrid.Value>
+        </components:KeyValueVerticalGrid>
+    </StackPanel>
+</UserControl>

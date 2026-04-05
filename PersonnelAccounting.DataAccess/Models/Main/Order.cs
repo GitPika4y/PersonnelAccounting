@@ -26,5 +26,5 @@ public class Order: EntityModel
 
     public virtual Department? HireDepartment { get; set; }
     public virtual Position? HirePosition { get; set; }
-    public virtual required Employee Employee { get; set; }
+    public virtual Employee Employee { get; set; } = null!;
 }

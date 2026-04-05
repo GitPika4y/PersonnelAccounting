@@ -12,12 +12,13 @@ namespace WPF_Desktop.ViewModels;
 
 public partial class AuthViewModel(
     IAuthUseCase useCase,
-    INavigationService navigationService,
+    NavigationRegistry navigationRegistry,
     ISessionService sessionService,
     IRememberMeService rememberMeService)
     : ViewModelBase
 {
     private bool _isLogged;
+    private NavigationService NavigationService => navigationRegistry.Get(NavigationRegion.Window);
 
     [ObservableProperty]
     [Required(ErrorMessage = "Обязательное поле")]
@@ -61,7 +62,7 @@ public partial class AuthViewModel(
                 if (IsRememberMeChecked)
                     rememberMeService.Save(new RememberMeData(Login));
 
-                navigationService.Navigate<MainViewModel>();
+                NavigationService.Navigate<MainViewModel>();
                 break;
 
             case { IsSuccess: true, Data: null }:
