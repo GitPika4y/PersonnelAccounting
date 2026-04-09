@@ -24,6 +24,10 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
         _ = UpdateCollection();
     }
 
+    public async Task InitializeAsync()
+    {
+    }
+
     protected override async Task UpdateCollection()
     {
         var resource = await _useCase.GetAllAsync(SelectedPage, SelectedPageSize);

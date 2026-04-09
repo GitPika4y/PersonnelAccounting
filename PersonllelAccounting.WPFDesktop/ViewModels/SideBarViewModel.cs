@@ -37,7 +37,6 @@ public partial class SideBarViewModel: ViewModelBase
     public Data.Models.Auth.User CurrentUser { get; }
 
     public SideBarViewModel(
-        IServiceProvider services,
         ISessionService sessionService,
         NavigationRegistry navigationRegistry)
     {

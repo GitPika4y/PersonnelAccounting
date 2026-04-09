@@ -3,13 +3,23 @@ using System.Windows.Data;
 
 namespace WPF_Desktop.Converters;
 
-public class MultiEqualityConverter : IMultiValueConverter
+public class EqualityBoolConverter : IMultiValueConverter
 {
     public bool Invert { get; set; }
 
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        return values.Length == 2 && Equals(values[0], values[1]) | Invert;
+
+        if (values.Length < 2)
+            return false;
+
+        var obj1 = values[0];
+        var obj2 = values[1];
+
+
+        var areEqual = Equals(obj1, obj2);
+
+        return Invert ? !areEqual : areEqual;
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

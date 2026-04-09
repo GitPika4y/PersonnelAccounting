@@ -20,13 +20,7 @@
                    HorizontalAlignment="Center"/>
 
         <!-- CONTENT -->
-        <components:PaginationControl Grid.Row="1"
-                                      Count="{Binding Pagination.Count}"
-                                      Pages="{Binding Pagination.Pages}"
-                                      PageSizes="{Binding PageSizes}"
-                                      SelectedPageSize="{Binding SelectedPageSize}"
-                                      PageSizeChanged="{Binding ChangePageSizeCommand}"
-                                      ChangePageCommand="{Binding ChangePageCommand}">
+        <components:PaginationControl Grid.Row="1">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ListBox ItemsSource="{Binding Employees}"
                              SelectedItem="{Binding SelectedEmployee}"

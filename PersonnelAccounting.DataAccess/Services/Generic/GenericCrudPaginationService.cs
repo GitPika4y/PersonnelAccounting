@@ -10,10 +10,7 @@ public class GenericCrudPaginationService<T>(
     IGenericCrudService<T> service) : IGenericCrudPaginationService<T>
     where T : EntityModel
 {
-    public async Task<IReadOnlyCollection<T>> GetAllAsync() =>
-        await service.GetAllAsync();
-
-    public async Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>> filter) =>
+    public async Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>>? filter) =>
         await service.GetAllAsync(filter);
 
     public async Task<T?> GetByIdAsync(Guid id) =>
@@ -26,9 +23,9 @@ public class GenericCrudPaginationService<T>(
         await service.UpdateAsync(entity);
 
     public async Task<PaginationModel<T>> GetAllPagesAsync(
-        Expression<Func<T, bool>>? filter = null,
-        int page = 1,
-        int pageSize = 10)
+        int page,
+        int pageSize,
+        Expression<Func<T, bool>>? filter = null)
     {
         var query = context.Set<T>().AsQueryable();
 

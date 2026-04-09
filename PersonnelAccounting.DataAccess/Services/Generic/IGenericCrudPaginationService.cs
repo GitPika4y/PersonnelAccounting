@@ -3,11 +3,12 @@ using Data.Models;
 
 namespace Data.Services.Generic;
 
-public interface IGenericCrudPaginationService<T>:
-    IGenericCrudService<T>
+public interface IGenericCrudPaginationService<T>
+    : IGenericCrudService<T>
     where T : EntityModel
 {
-    Task<PaginationModel<T>> GetAllPagesAsync(Expression<Func<T, bool>>? filter = null,
-        int page = 1,
-        int pageSize = 10);
+    Task<PaginationModel<T>> GetAllPagesAsync(
+        int page,
+        int pageSize,
+        Expression<Func<T, bool>>? filter = null);
 }

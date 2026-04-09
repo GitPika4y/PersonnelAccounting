@@ -7,11 +7,14 @@ namespace Data.Services.Generic;
 
 public class GenericCrudService<T>(AppDbContext context): IGenericCrudService<T> where T : EntityModel
 {
-    public async Task<IReadOnlyCollection<T>> GetAllAsync() =>
-         await context.Set<T>().AsNoTracking().ToListAsync();
+    public async Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
+    {
+        var query = context.Set<T>().AsNoTracking();
+        if (filter != null)
+            query = query.Where(filter);
 
-    public async Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>> filter) =>
-        await context.Set<T>().Where(filter).AsNoTracking().ToListAsync();
+        return await query.ToListAsync();
+    }
 
     public async Task<T?> GetByIdAsync(Guid id) =>
         await context.Set<T>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);

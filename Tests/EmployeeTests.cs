@@ -4,6 +4,27 @@ namespace TestProject1;
 
 public class EmployeeTests
 {
+    private EmployeePassport SetUpPassport()
+    {
+        return new EmployeePassport
+        {
+            Serial = "1234",
+            Number = "123456",
+            Date = default,
+            GivenBy = "SomeOne",
+        };
+    }
+
+    private EmployeeEducation SetUpEducation()
+    {
+        return new EmployeeEducation
+        {
+            Qualification = Qualification.Secondary,
+            Specialization = Specialization.SoftwareEngineering,
+            GraduationYear = 2020
+        };
+    }
+
     private Employee SetUpEmployee()
     {
         return new Employee
@@ -14,7 +35,9 @@ public class EmployeeTests
             BirthDate = DateTime.Now - TimeSpan.FromDays(365 * 18),
             PhoneNumber = "8 323 900 90 90",
             Inn = "123456789012",
-            Gender = EmployeeGender.Male
+            Gender = EmployeeGender.Male,
+            Passport = SetUpPassport(),
+            Education = SetUpEducation()
         };
     }
 

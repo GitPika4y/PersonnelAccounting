@@ -5,7 +5,7 @@ namespace Data.Models.Main;
 
 [Index(nameof(PhoneNumber), IsUnique = true)]
 [Index(nameof(Inn), IsUnique = true)]
-public class Employee: EntityModel
+public class Employee : EntityModel
 {
     public required string LastName { get; set; }
     public required string FirstName { get; set; }
@@ -14,58 +14,67 @@ public class Employee: EntityModel
     public required string PhoneNumber { get; set; }
     public required string Inn { get; set; }
     public required EmployeeGender Gender { get; set; }
+
     public Guid PassportId { get; set; }
     public Guid EducationId { get; set; }
 
-    public virtual EmployeePassport Passport { get; set; } = null!;
-    public virtual EmployeeEducation Education { get; set; } = null!;
+    public virtual required EmployeePassport Passport { get; set; } = null!;
+    public virtual required EmployeeEducation Education { get; set; } = null!;
     public virtual ICollection<Order> Orders { get; set; } = [];
 
-    public string FullName => $"{LastName} {FirstName} {MiddleName}";
+    private IEnumerable<Order> OrderedOrders =>
+        Orders.OrderByDescending(o => o.StartDate);
 
-    public bool IsWorking => Orders.Count != 0
-                             && Orders.LastOrDefault(o => o.Type is OrderType.Hire or OrderType.Fire)
-                                 ?.Type is OrderType.Hire;
+    private Order? GetLastOrder(Func<Order, bool>? predicate = null)
+    {
+        var query = OrderedOrders;
+
+        if (predicate != null)
+            query = query.Where(predicate);
+
+        return query.FirstOrDefault();
+    }
+
+    public string FullName =>
+        $"{LastName} {FirstName} {MiddleName}".Trim();
+
+    public bool IsWorking =>
+        GetLastOrder(o => o.Type is OrderType.Hire or OrderType.Fire)?.Type
+            == OrderType.Hire;
 
     public EmployeeStatus Status
     {
         get
         {
-            if (Orders.IsNullOrEmpty())
+            var lastOrder = GetLastOrder();
+
+            if (lastOrder == null)
                 return EmployeeStatus.NotWorking;
 
-            var lastActiveOrder = Orders
-                .OrderByDescending(o => o.StartDate)
-                .Take(1)
-                .FirstOrDefault();
-
-            if (lastActiveOrder is null)
-                return EmployeeStatus.NotWorking;
-
-            var lastOrderType = lastActiveOrder.Type;
-
-            return lastOrderType switch
+            return lastOrder.Type switch
             {
                 OrderType.Hire => EmployeeStatus.Working,
                 OrderType.Fire => EmployeeStatus.Fired,
                 OrderType.StudyLeave => EmployeeStatus.OnStudyLeave,
                 OrderType.Vacation => EmployeeStatus.OnVacation,
                 OrderType.BusinessTrip => EmployeeStatus.OnBusinessTrip,
-                _ => throw new ArgumentOutOfRangeException()
+                _ => EmployeeStatus.NotWorking
             };
         }
     }
 
-    public DateTime? InWorkSince => Orders.LastOrDefault(o => o.Type is OrderType.Hire)
-        ?.StartDate;
+    public Order? HireOrder =>
+        GetLastOrder(o => o.Type == OrderType.Hire);
 
-    public DateTime? InWorkUntil => Orders.LastOrDefault(o => o.Type is OrderType.Hire)
-        ?.EndDate;
+    public Order? FireOrder =>
+        GetLastOrder(o => o.Type == OrderType.Fire);
 
-    public Position? Position => Orders.LastOrDefault(o => o.Type is OrderType.Hire)
-        ?.HirePosition;
+    public DateTime? InWorkSince =>
+        HireOrder?.StartDate;
 
-    public Order? HireOrder => Orders.LastOrDefault(o => o.Type is OrderType.Hire);
+    public DateTime? InWorkUntil =>
+        HireOrder?.EndDate;
 
-    public Order? FireOrder => Orders.LastOrDefault(o => o.Type is OrderType.Fire);
+    public Position? Position =>
+        HireOrder?.HirePosition;
 }

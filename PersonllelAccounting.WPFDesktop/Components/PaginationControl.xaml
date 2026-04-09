@@ -1,7 +1,9 @@
 ﻿<UserControl x:Class="WPF_Desktop.Components.PaginationControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:components="clr-namespace:WPF_Desktop.Components">
+             xmlns:components="clr-namespace:WPF_Desktop.Components"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             x:Name="Root">
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -25,7 +27,8 @@
             <components:KeyValueBlock Grid.Row="0"
                                       Grid.Column="0"
                                       Key="Всего"
-                                      Value="{Binding Count, StringFormat={}{0} записей, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                      Value="{Binding Pagination.Count,
+                                             StringFormat={}{0} записей}"
                                       FontSize="18"
                                       Margin="0 0 0 10"
                                       UseTextBox="False"/>
@@ -33,20 +36,19 @@
             <!-- PAGE SIZE -->
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
-                Orientation="Horizontal">
+                        Orientation="Horizontal">
 
                 <TextBlock Text="Показать: "
                            FontSize="16"
                            VerticalAlignment="Center"/>
 
-                <ComboBox ItemsSource="{Binding PageSizes, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                          SelectedItem="{Binding SelectedPageSize, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                          SelectionChanged="Selector_OnSelectionChanged"
+                <ComboBox ItemsSource="{Binding PageSizes}"
+                          SelectedItem="{Binding SelectedPageSize}"
                           Margin="10 0"/>
 
                 <TextBlock Text="записей"
-                     FontSize="16"
-                     VerticalAlignment="Center"/>
+                           FontSize="16"
+                           VerticalAlignment="Center"/>
             </StackPanel>
 
             <!-- NAVIGATION BUTTONS -->
@@ -54,7 +56,7 @@
                           Grid.RowSpan="2"
                           Grid.Column="1"
                           HorizontalAlignment="Right"
-                          ItemsSource="{Binding Pages, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                          ItemsSource="{Binding Pagination.Pages}">
 
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -67,16 +69,25 @@
                         <Button Content="{Binding}"
                                 CommandParameter="{Binding}"
                                 Margin="5 0"
-                                Command="{Binding ChangePageCommand,
-                                    RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                Command="{Binding DataContext.ChangePageCommand,
+                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{StaticResource InvertEqualityToBoolConverter}">
+                                    <Binding Path="DataContext.SelectedPage"
+                                             RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
+                                    <Binding/>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
 
-        <!-- CONTENT -->
+        <!-- CONTENT - передаём DataContext явно -->
         <ContentControl Grid.Row="1"
-                          Content="{Binding Content, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                          Margin="0 10"/>
+                        Content="{Binding Content, ElementName=Root}"
+                        Margin="0 10"
+                        DataContext="{Binding DataContext, ElementName=Root}"/>
     </Grid>
 </UserControl>

@@ -15,6 +15,14 @@
     <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
     <converters:NullToBoolConverter x:Key="NotNullToBoolConverter" Invert="True"/>
 
-    <converters:MultiEqualityConverter x:Key="EqualityConverter"/>
-    <converters:MultiEqualityConverter x:Key="InvertEqualityConverter" Invert="True"/>
+    <converters:EqualityBoolConverter x:Key="EqualityToBoolConverter"/>
+    <converters:EqualityBoolConverter x:Key="InvertEqualityToBoolConverter" Invert="True"/>
+
+    <converters:EqualityToVisibilityMultiConverter x:Key="EqualityToVisibilityMultiConverter"/>
+    <converters:EqualityToVisibilityMultiConverter x:Key="InvertEqualityToVisibilityMultiConverter" Invert="True"/>
+
+    <converters:TypeEqualityToBoolConverter x:Key="TypeEqualityToBoolConverter"/>
+    <converters:TypeEqualityToBoolConverter x:Key="InvertTypeEqualityToBoolConverter" Invert="True"/>
+
+    <converters:IntersectionToVisibilityConverter x:Key="IntersectionToVisibilityConverter"/>
 </ResourceDictionary>

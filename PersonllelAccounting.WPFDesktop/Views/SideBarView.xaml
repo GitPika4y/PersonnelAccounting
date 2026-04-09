@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:localVm="clr-namespace:WPF_Desktop.ViewModels"
-             >
+             Name="Root">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -24,7 +24,7 @@
             <ItemsControl ItemsSource="{Binding SideBarItems}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        <Button Command="{Binding DataContext.NavigateCommand, ElementName=Root}"
                                 CommandParameter="{Binding Destination}"
                                 Margin="0 0 0 20"
                                 HorizontalContentAlignment="Left"

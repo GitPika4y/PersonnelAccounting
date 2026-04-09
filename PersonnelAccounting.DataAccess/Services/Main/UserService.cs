@@ -6,10 +6,7 @@ namespace Data.Services.Main;
 
 public class UserService(IGenericCrudService<User> service): IUserService
 {
-    public async Task<IReadOnlyCollection<User>> GetAllAsync() =>
-        await service.GetAllAsync();
-
-    public async Task<IReadOnlyCollection<User>> GetAllAsync(Expression<Func<User, bool>> filter) =>
+    public async Task<IReadOnlyCollection<User>> GetAllAsync(Expression<Func<User, bool>>? filter) =>
         await service.GetAllAsync(filter);
 
     public async Task<User?> GetByIdAsync(Guid id) =>

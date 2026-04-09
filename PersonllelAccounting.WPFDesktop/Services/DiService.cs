@@ -35,6 +35,7 @@ public static class DiService
         services.AddTransient<EmployeeDetailViewModel>();
 
         services.AddScoped<IEmployeeUseCase, EmployeeUseCase>();
+        services.AddScoped<IOrderUseCase, OrderUseCase>();
 
         // SINGLETONS
         services.AddSingleton<MainWindow>();

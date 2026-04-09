@@ -73,44 +73,7 @@ public partial class EmployeeAddEditModalViewModel: ViewModelBase
         Resource<Employee> resource;
         try
         {
-            var employee = new Employee
-            {
-                LastName = LastName,
-                FirstName = FirstName,
-                MiddleName = MiddleName,
-                BirthDate = BirthDate,
-                PhoneNumber = PhoneNumber,
-                Inn = Inn,
-                Gender = Gender,
-                Passport = new EmployeePassport
-                {
-                    Serial = PassportSerial,
-                    Number = PassportNumber,
-                    Date = PassportDate,
-                    GivenBy = PassportGivenBy
-                },
-                Education = new EmployeeEducation
-                {
-                    Qualification = Qualification,
-                    Specialization = Specialization,
-                    GraduationYear = GraduationYear
-                }
-            };
-
-            if (_id is not null)
-                employee.Id = _id.Value;
-            if (_educationId is not null)
-            {
-                employee.Education.Id = _educationId.Value;
-                employee.EducationId = _educationId.Value;
-            }
-
-            if (_passportId is not null)
-            {
-                employee.Passport.Id = _passportId.Value;
-                employee.PassportId = _passportId.Value;
-            }
-
+            var employee = BuildEmployee();
             resource = Resource<Employee>.Success(employee);
         }
         catch (Exception e)
@@ -119,5 +82,49 @@ public partial class EmployeeAddEditModalViewModel: ViewModelBase
         }
 
         DialogHost.CloseDialogCommand.Execute(resource, null);
+    }
+
+    private Employee BuildEmployee()
+    {
+        var employee = new Employee
+        {
+            LastName = LastName,
+            FirstName = FirstName,
+            MiddleName = MiddleName,
+            BirthDate = BirthDate,
+            PhoneNumber = PhoneNumber,
+            Inn = Inn,
+            Gender = Gender,
+            Passport = new EmployeePassport
+            {
+                Serial = PassportSerial,
+                Number = PassportNumber,
+                Date = PassportDate,
+                GivenBy = PassportGivenBy
+            },
+            Education = new EmployeeEducation
+            {
+                Qualification = Qualification,
+                Specialization = Specialization,
+                GraduationYear = GraduationYear
+            }
+        };
+
+        if (_id is not null)
+            employee.Id = _id.Value;
+
+        if (_educationId is not null)
+        {
+            employee.Education.Id = _educationId.Value;
+            employee.EducationId = _educationId.Value;
+        }
+
+        if (_passportId is not null)
+        {
+            employee.Passport.Id = _passportId.Value;
+            employee.PassportId = _passportId.Value;
+        }
+
+        return employee;
     }
 }

@@ -15,7 +15,7 @@ public class OrderConfiguration: IEntityTypeConfiguration<Order>
         {
             t.HasCheckConstraint(
                 "CH_Order_StartDate_EndDate",
-                "[StartDate] <= [EndDate]");
+                "[EndDate] >= [StartDate]");
 
             t.HasCheckConstraint(
                 "CH_Order_Date_StartDate",
@@ -23,7 +23,7 @@ public class OrderConfiguration: IEntityTypeConfiguration<Order>
 
             t.HasCheckConstraint(
                 "CH_Order_Date",
-                "[Date] >= GETDATE()");
+                "CAST([Date] AS DATE) >= CAST(GETDATE() AS DATE)");
 
             t.HasCheckConstraint(
                 "CH_Order_Type",
