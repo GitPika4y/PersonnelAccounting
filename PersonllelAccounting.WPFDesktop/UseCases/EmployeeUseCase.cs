@@ -11,6 +11,9 @@ public class EmployeeUseCase(IGenericCrudPaginationService<Employee> service): U
     public async Task<Resource<PaginationModel<Employee>>> GetAllAsync(int page, int pageSize, Expression<Func<Employee, bool>>? filter = null) =>
         await SafeCallAsync(() => service.GetAllPagesAsync(page, pageSize, filter));
 
+    public async Task<Resource<Employee?>> GetByIdAsync(Guid id) =>
+        await SafeCallAsync(() => service.GetByIdAsync(id));
+
     public async Task<Resource> AddAsync(Employee employee) =>
         await SafeCallAsync(() => service.AddAsync(employee));
 

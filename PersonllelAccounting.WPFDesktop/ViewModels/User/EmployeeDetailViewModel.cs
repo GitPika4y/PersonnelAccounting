@@ -11,7 +11,8 @@ public partial class EmployeeDetailViewModel(
     IOrderTypeService orderTypeService,
     IPositionUseCase positionUseCase,
     IDepartmentUseCase departmentUseCase,
-    IOrderUseCase orderUseCase
+    IOrderUseCase orderUseCase,
+    IEmployeeUseCase employeeUseCase
     ): ViewModelBase, INavigationAware<Employee>
 {
     [ObservableProperty] private Employee _employee = null!;
@@ -19,6 +20,15 @@ public partial class EmployeeDetailViewModel(
     public void OnNavigatedTo(Employee parameter)
     {
         Employee = parameter;
+    }
+
+    public async Task UpdateCurrentEmployee()
+    {
+        var employeeId = Employee.Id;
+        var resource = await employeeUseCase.GetByIdAsync(employeeId);
+        await HandleResource(
+            resource,
+            updatedEmployee => Employee = updatedEmployee!);
     }
 
     [RelayCommand]
@@ -41,6 +51,7 @@ public partial class EmployeeDetailViewModel(
             case Resource<Order> { IsSuccess: true, Data: not null} successfulResource:
                 var resource = await orderUseCase.AddAsync(successfulResource.Data);
                 await HandleResourceMessage(resource, "Приказ успешно добавлен");
+                await UpdateCurrentEmployee();
                 break;
 
             case Resource<Order> { IsSuccess: false, ExceptionMessage: not null} failedResource:

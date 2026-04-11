@@ -39,11 +39,16 @@
         </Grid>
 
         <components:KeyValueHorizontalGrid Key="Дата рождения"
-                                  Value="{Binding Employee.BirthDate,
-                                        StringFormat={}{0:dd.MM.yyyy}}"
-                                  Margin="0 0 0 10"/>
+                                           Value="{Binding Employee.BirthDate,
+                                            StringFormat={}{0:dd.MM.yyyy}}"
+                                           Margin="0 0 0 10"/>
 
         <components:KeyValueHorizontalGrid Key="Телефон"
-                                  Value="{Binding Employee.PhoneNumber}"/>
+                                           Value="{Binding Employee.PhoneNumber}"
+                                           Margin="0 0 0 10"/>
+
+        <components:KeyValueHorizontalGrid Key="Статус"
+                                           Value="{Binding Employee.Status,
+                                            Converter={StaticResource EnumToDisplayNameConverter}}"/>
     </StackPanel>
 </UserControl>

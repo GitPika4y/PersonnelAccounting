@@ -46,7 +46,7 @@ public class Employee : EntityModel
     {
         get
         {
-            var lastOrder = GetLastOrder();
+            var lastOrder = GetLastOrder(o => o.Status is OrderStatus.Active);
 
             if (lastOrder == null)
                 return EmployeeStatus.NotWorking;
