@@ -70,12 +70,11 @@ public partial class AdminUserViewModel: ViewModelBase
         switch (dialogResult)
         {
             case Resource<Data.Models.Auth.User> { IsSuccess: true, Data: not null } successResource:
-            {
                 var resource = await _useCase.Update(successResource.Data);
                 await HandleResourceMessage(resource, "Пользователь успешно добавлен");
                 await UpdateUserCollection();
                 break;
-            }
+
             case Resource<Data.Models.Auth.User> { IsSuccess: false } failureResource:
                 await HandleResourceMessage(failureResource, "");
                 break;

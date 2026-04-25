@@ -29,14 +29,14 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
         _positionUseCase = positionUseCase;
         _departmentUseCase = departmentUseCase;
         _orderUseCase = orderUseCase;
-        _ = UpdateCollection();
+        _ = UpdatePaginationCollection();
     }
 
     public async Task InitializeAsync()
     {
     }
 
-    protected override async Task UpdateCollection()
+    protected override async Task UpdatePaginationCollection()
     {
         var resource = await _orderUseCase.GetAllAsync(SelectedPage, SelectedPageSize);
         await HandleResource(
@@ -71,12 +71,18 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
             case Resource<Order> { IsSuccess: true, Data: not null } successResource:
                 var resource = await _orderUseCase.AddAsync(successResource.Data);
                 await HandleResourceMessage(resource, "Добавление приказа успешно");
-                await UpdateCollection();
+                await UpdatePaginationCollection();
                 break;
 
             case Resource<Order> { IsSuccess: false, ExceptionMessage: not null } failedResource:
                 await HandleResourceMessage(failedResource, "");
                 break;
         }
+    }
+
+    [RelayCommand]
+    private async Task OpenDetail(Order order)
+    {
+        await ShowDialog(new OrderDetailModalViewModel(order));
     }
 }

@@ -51,7 +51,7 @@
 
         <!-- ACTION BUTTONS -->
         <Button Grid.Row="2"
-                Content="Добавить"
+                Content="Добавить сотрудника"
                 Command="{Binding AddEmployeeCommand}"/>
     </Grid>
 </UserControl>

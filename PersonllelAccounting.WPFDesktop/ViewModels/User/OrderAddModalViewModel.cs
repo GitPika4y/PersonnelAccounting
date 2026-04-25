@@ -46,7 +46,7 @@ public partial class OrderAddModalViewModel: ViewModelPagination<Employee>
         SelectedOrderType = OrderTypes.First();
     }
 
-    protected override async Task UpdateCollection()
+    protected override async Task UpdatePaginationCollection()
     {
         var resource = await _employeeUseCase.GetAllAsync(SelectedPage, SelectedPageSize);
         await HandleResource(
@@ -70,7 +70,7 @@ public partial class OrderAddModalViewModel: ViewModelPagination<Employee>
         : this(orderTypeService,  positions, departments)
     {
         _employeeUseCase = employeeUseCase;
-        _ = UpdateCollection();
+        _ = UpdatePaginationCollection();
     }
 
     public OrderAddModalViewModel(Employee employee, IOrderTypeService orderTypeService, ICollection<Position> positions, ICollection<Department> departments)
@@ -83,22 +83,25 @@ public partial class OrderAddModalViewModel: ViewModelPagination<Employee>
     private bool CanSave()
     {
         return ValidateByOrderType()
-            && CheckProperties();
+               && ValidateDates()
+               && CheckProperties();
     }
 
     private bool ValidateByOrderType()
     {
-        switch (SelectedOrderType)
+        return SelectedOrderType switch
         {
-            case OrderType.Hire:
-                return SelectedDepartment is not null && SelectedPosition is not null;
+            OrderType.Hire => SelectedDepartment is not null && SelectedPosition is not null,
+            OrderType.Fire => !string.IsNullOrEmpty(FireReason),
+            _ => true
+        };
+    }
 
-            case OrderType.Fire:
-                return !string.IsNullOrEmpty(FireReason);
-
-            default:
-                return true;
-        }
+    private bool ValidateDates()
+    {
+        // Date <= StartDate <= EndDate
+        return StartDate >= Date
+            && EndDate is null || EndDate >= StartDate;
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
@@ -155,6 +158,14 @@ public partial class OrderAddModalViewModel: ViewModelPagination<Employee>
 
                 order.FireReason = FireReason;
                 break;
+
+            case OrderType.StudyLeave:
+            case OrderType.Vacation:
+            case OrderType.BusinessTrip:
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         return order;

@@ -12,12 +12,12 @@ public abstract partial class ViewModelPagination<T>: ViewModelBase where T: Ent
     [ObservableProperty] private int _selectedPageSize = PageSizes.First();
     [ObservableProperty] private PaginationModel<T> _pagination;
 
-    protected abstract Task UpdateCollection();
+    protected abstract Task UpdatePaginationCollection();
 
     async partial void OnSelectedPageSizeChanged(int value)
     {
         SelectedPage = 1;
-        await UpdateCollection();
+        await UpdatePaginationCollection();
     }
 
     [RelayCommand]
@@ -25,6 +25,6 @@ public abstract partial class ViewModelPagination<T>: ViewModelBase where T: Ent
     {
         if (page < 1) page = 1;
         SelectedPage = page;
-        await UpdateCollection();
+        await UpdatePaginationCollection();
     }
 }

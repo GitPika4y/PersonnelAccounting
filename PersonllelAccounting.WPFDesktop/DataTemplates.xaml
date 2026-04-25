@@ -73,6 +73,10 @@
         <viewsUser:OrderAddModalView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vmUser:OrderDetailModalViewModel}">
+	    <viewsUser:OrderDetailModalView/>
+    </DataTemplate>
+
     <!-- MODALS -->
     <DataTemplate DataType="{x:Type vmModal:MessageModalViewModel}">
         <viewsModal:MessageModalView/>

@@ -1,8 +1,10 @@
-﻿namespace Data.Models.Main;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Data.Models.Main;
 
 public enum OrderStatus
 {
-    Expired,
-    Upcoming,
-    Active
+    [Display(Name="Просрочен")] Expired,
+    [Display(Name="Намечающийся")] Upcoming,
+    [Display(Name="Активный")] Active
 }

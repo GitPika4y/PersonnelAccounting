@@ -25,4 +25,6 @@
     <converters:TypeEqualityToBoolConverter x:Key="InvertTypeEqualityToBoolConverter" Invert="True"/>
 
     <converters:IntersectionToVisibilityConverter x:Key="IntersectionToVisibilityConverter"/>
+
+    <converters:DateOrInfiniteConverter x:Key="DateOrInfiniteConverter"/>
 </ResourceDictionary>

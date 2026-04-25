@@ -83,12 +83,12 @@
                 <StackPanel>
                     <components:VisibilityControl Value="{Binding SelectedOrderType}"
                                                   TargetValue="{x:Static models:OrderType.Hire}">
-                        <partials:OrderHirePartial Margin="20"/>
+                        <partials:OrderHireAddPartial Margin="20"/>
                     </components:VisibilityControl>
 
                     <components:VisibilityControl Value="{Binding SelectedOrderType}"
                                                   TargetValue="{x:Static models:OrderType.Fire}">
-                        <partials:OrderFirePartial Margin="20"/>
+                        <partials:OrderFireAddPartial Margin="20"/>
                     </components:VisibilityControl>
                 </StackPanel>
             </GroupBox>

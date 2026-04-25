@@ -40,7 +40,7 @@
 
         <components:KeyValueHorizontalGrid Key="Дата рождения"
                                            Value="{Binding Employee.BirthDate,
-                                            StringFormat={}{0:dd.MM.yyyy}}"
+                                            Converter={StaticResource DateOrInfiniteConverter}}"
                                            Margin="0 0 0 10"/>
 
         <components:KeyValueHorizontalGrid Key="Телефон"

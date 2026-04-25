@@ -1,17 +1,14 @@
 ﻿<UserControl x:Class="WPF_Desktop.Views.User.Partials.OrderHirePartial"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <StackPanel>
-        <ComboBox ItemsSource="{Binding Departments}"
-                  SelectedItem="{Binding SelectedDepartment}"
-                  DisplayMemberPath="Title"
-                  md:HintAssist.Hint="Отдел"
-                  Margin="0 0 0 20"/>
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
 
-        <ComboBox ItemsSource="{Binding Positions}"
-                  SelectedItem="{Binding SelectedPosition}"
-                  DisplayMemberPath="Title"
-                  md:HintAssist.Hint="Должность"/>
-    </StackPanel>
+	<StackPanel>
+		<components:KeyValueHorizontalGrid Key="Отдел"
+		                                   Value="{Binding HireDepartment.Title}"
+		                                   Margin="0 0 0 10"/>
+
+		<components:KeyValueHorizontalGrid Key="Должность"
+		                                   Value="{Binding HirePosition.Title}"/>
+	</StackPanel>
 </UserControl>

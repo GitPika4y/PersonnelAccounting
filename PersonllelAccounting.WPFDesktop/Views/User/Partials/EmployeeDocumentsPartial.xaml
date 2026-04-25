@@ -30,7 +30,8 @@
             <components:KeyValueBlock Grid.Column="0"
                                       Grid.Row="1"
                                       Key="Дата"
-                                      Value="{Binding Employee.Passport.Date}"
+                                      Value="{Binding Employee.Passport.Date,
+										Converter={StaticResource DateOrInfiniteConverter}}"
                                       UseTextBox="True"
                                       Margin="0 10 10 0"
                                       Orientation="Vertical"/>

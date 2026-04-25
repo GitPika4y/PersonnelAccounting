@@ -20,11 +20,7 @@ public class UserService(IGenericCrudService<User> service): IUserService
 
     public async Task UpdateAsync(User entity)
     {
-        var entityToUpdate = await GetByIdAsync(entity.Id) ?? throw new NullReferenceException("Cannot find entity to update it");
-
-        if (!BCrypt.Net.BCrypt.EnhancedVerify(entity.Password, entityToUpdate.Password))
-            entity.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(entity.Password);
-
+        entity.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(entity.Password);
         await service.UpdateAsync(entity);
     }
 }

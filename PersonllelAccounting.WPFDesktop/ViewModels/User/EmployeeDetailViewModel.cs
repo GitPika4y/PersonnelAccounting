@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Data.Models.Main;
 using Data.Services.Main;
@@ -13,13 +14,16 @@ public partial class EmployeeDetailViewModel(
     IDepartmentUseCase departmentUseCase,
     IOrderUseCase orderUseCase,
     IEmployeeUseCase employeeUseCase
-    ): ViewModelBase, INavigationAware<Employee>
+    ): ViewModelPagination<Order>, INavigationAware<Employee>
 {
+    public ObservableCollection<Order> Orders { get; } = [];
+
     [ObservableProperty] private Employee _employee = null!;
 
     public void OnNavigatedTo(Employee parameter)
     {
         Employee = parameter;
+        _ = UpdatePaginationCollection();
     }
 
     public async Task UpdateCurrentEmployee()
@@ -58,5 +62,23 @@ public partial class EmployeeDetailViewModel(
                 await HandleResourceMessage(failedResource, "");
                 break;
         }
+    }
+
+    protected override async Task UpdatePaginationCollection()
+    {
+        var resource = await orderUseCase.GetAllAsync(SelectedPage, SelectedPageSize, o => o.EmployeeId == Employee.Id);
+        await HandleResource(
+            resource,
+            paginationModel =>
+            {
+                Pagination = paginationModel;
+                UpdateObservableCollection(Orders, paginationModel.Items);
+            });
+    }
+
+    [RelayCommand]
+    private async Task OpenDetailOrder(Order order)
+    {
+        await ShowDialog(new OrderDetailModalViewModel(order));
     }
 }

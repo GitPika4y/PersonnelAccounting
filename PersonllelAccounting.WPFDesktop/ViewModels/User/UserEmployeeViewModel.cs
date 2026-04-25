@@ -21,14 +21,14 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
     {
         _useCase = useCase;
         _navigationService = navigationRegistry.Get(NavigationRegion.MainView);
-        _ = UpdateCollection();
+        _ = UpdatePaginationCollection();
     }
 
     public async Task InitializeAsync()
     {
     }
 
-    protected override async Task UpdateCollection()
+    protected override async Task UpdatePaginationCollection()
     {
         var resource = await _useCase.GetAllAsync(SelectedPage, SelectedPageSize);
         await HandleResource(
@@ -49,7 +49,7 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
             case Resource<Employee> {IsSuccess: true, Data: not null} successResource:
                 var resource = await _useCase.AddAsync(successResource.Data);
                 await HandleResourceMessage(resource, "Добавление сотрудника успешно");
-                await UpdateCollection();
+                await UpdatePaginationCollection();
                 break;
 
             case Resource<Employee> { IsSuccess: false, ExceptionMessage: not null} failedResource:
@@ -73,7 +73,7 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
             case Resource<Employee> {IsSuccess: true, Data: not null} successResource:
                 var resource = await _useCase.UpdateAsync(successResource.Data);
                 await HandleResourceMessage(resource, "Редактирование сотрудника успешно");
-                await UpdateCollection();
+                await UpdatePaginationCollection();
                 break;
 
             case Resource<Employee> {IsSuccess: false, ExceptionMessage: not null} failedResource:

@@ -6,12 +6,14 @@
         <StackPanel Orientation="Horizontal"
                     Margin="0 0 0 10">
             <components:KeyValueHorizontalGrid Key="Принят на работу с"
-                                      Value="{Binding Employee.InWorkSince}"
+                                      Value="{Binding Employee.InWorkSince,
+										Converter={StaticResource DateOrInfiniteConverter}}"
                                       UseTextBox="True"
                                       Margin="0 0 10 0"/>
 
             <components:KeyValueHorizontalGrid Key="по"
-                                      Value="{Binding Employee.InWorkUntil}"
+                                      Value="{Binding Employee.InWorkUntil,
+										Converter={StaticResource DateOrInfiniteConverter}}"
                                       UseTextBox="True"
                                       Margin="10 0 0 0"/>
         </StackPanel>
@@ -26,14 +28,8 @@
                                   UseTextBox="True"
                                   Margin="0 0 0 10"/>
 
-        <components:KeyValueVerticalGrid Key="Основнание приема на работу"
-                                  UseTextBox="True">
-            <components:KeyValueVerticalGrid.Value>
-                <MultiBinding StringFormat="приказ № {0} от {1}">
-                    <Binding Path="Employee.HireOrder.Id"/>
-                    <Binding Path="Employee.HireOrder.Date"/>
-                </MultiBinding>
-            </components:KeyValueVerticalGrid.Value>
-        </components:KeyValueVerticalGrid>
+        <Button Content="Основание приема на работу"
+                Command="{Binding OpenDetailOrderCommand}"
+                CommandParameter="{Binding Employee.HireOrder}"/>
     </StackPanel>
 </UserControl>
