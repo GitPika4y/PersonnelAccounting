@@ -52,15 +52,6 @@ namespace Data.Migrations
                         {
                             t.HasCheckConstraint("CH_User_Role", "[Role] IN ('Admin','User')");
                         });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("3ec860f5-bfd3-46d6-9168-2ef53050f121"),
-                            Login = "admin",
-                            Password = "$2a$11$OswhLeNo0PGwGSGnI0RwTONRZtZUfgw656L0CbJtjY0/L00pvpyea",
-                            Role = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Data.Models.Main.Department", b =>
@@ -90,7 +81,14 @@ namespace Data.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("EducationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -105,9 +103,8 @@ namespace Data.Migrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Passport")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("PassportId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -115,10 +112,13 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EducationId")
+                        .IsUnique();
+
                     b.HasIndex("Inn")
                         .IsUnique();
 
-                    b.HasIndex("Passport")
+                    b.HasIndex("PassportId")
                         .IsUnique();
 
                     b.HasIndex("PhoneNumber")
@@ -128,12 +128,71 @@ namespace Data.Migrations
                         {
                             t.HasCheckConstraint("CH_Employee_BirthDate", "[BirthDate] <= GETDATE()");
 
+                            t.HasCheckConstraint("CH_Employee_Gender", "[Gender] IN ('Male','Female')");
+
                             t.HasCheckConstraint("CH_Employee_Inn", "LEN([Inn]) IN (12, 14)");
 
-                            t.HasCheckConstraint("CH_Employee_Passport", "LEN([Passport]) = 11 AND [Passport] LIKE '[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]'");
-
-                            t.HasCheckConstraint("CH_Employee_PhoneNumber", "LEN([PhoneNumber]) BETWEEN 10 AND 14");
+                            t.HasCheckConstraint("CH_Employee_PhoneNumber", "LEN([PhoneNumber]) BETWEEN 10 AND 16");
                         });
+                });
+
+            modelBuilder.Entity("Data.Models.Main.EmployeeEducation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("GraduationYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Qualification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Specialization")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeEducations", t =>
+                        {
+                            t.HasCheckConstraint("CH_EmployeeEducation_Qualification", "[Qualification] IN ('Secondary','SecondarySpecial','Bachelor','Master','Specialist','PhD')");
+
+                            t.HasCheckConstraint("CH_EmployeeEducation_Specialization", "[Specialization] IN ('SoftwareEngineering','InformationSystems','AppliedInformatics','CyberSecurity','Economics','Accounting','Finance','Management','HumanResources','Marketing','Law','PublicAdministration','Logistics','CivilEngineering','ElectricalEngineering')");
+                        });
+                });
+
+            modelBuilder.Entity("Data.Models.Main.EmployeePassport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GivenBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Serial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
+
+                    b.HasIndex("Serial")
+                        .IsUnique();
+
+                    b.ToTable("EmployeePassports");
                 });
 
             modelBuilder.Entity("Data.Models.Main.Order", b =>
@@ -177,11 +236,11 @@ namespace Data.Migrations
 
                     b.ToTable("Orders", t =>
                         {
-                            t.HasCheckConstraint("CH_Order_Date", "[Date] >= GETDATE()");
+                            t.HasCheckConstraint("CH_Order_Date", "CAST([Date] AS DATE) >= CAST(GETDATE() AS DATE)");
 
                             t.HasCheckConstraint("CH_Order_Date_StartDate", "[Date] <= [StartDate]");
 
-                            t.HasCheckConstraint("CH_Order_StartDate_EndDate", "[StartDate] <= [EndDate]");
+                            t.HasCheckConstraint("CH_Order_StartDate_EndDate", "[EndDate] >= [StartDate]");
 
                             t.HasCheckConstraint("CH_Order_Type", "[Type] IN ('Hire','Fire','StudyLeave','Vacation','BusinessTrip')");
                         });
@@ -206,6 +265,25 @@ namespace Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Positions");
+                });
+
+            modelBuilder.Entity("Data.Models.Main.Employee", b =>
+                {
+                    b.HasOne("Data.Models.Main.EmployeeEducation", "Education")
+                        .WithOne("Employee")
+                        .HasForeignKey("Data.Models.Main.Employee", "EducationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Models.Main.EmployeePassport", "Passport")
+                        .WithOne("Employee")
+                        .HasForeignKey("Data.Models.Main.Employee", "PassportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Education");
+
+                    b.Navigation("Passport");
                 });
 
             modelBuilder.Entity("Data.Models.Main.Order", b =>
@@ -239,6 +317,18 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Main.Employee", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Data.Models.Main.EmployeeEducation", b =>
+                {
+                    b.Navigation("Employee")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Data.Models.Main.EmployeePassport", b =>
+                {
+                    b.Navigation("Employee")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Models.Main.Position", b =>

@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="WPF_Desktop.Components.VisibilityControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Name="Root">
+
+    <ContentControl Content="{Binding Content, ElementName=Root}">
+        <ContentControl.Visibility>
+            <MultiBinding Converter="{StaticResource EqualityToVisibilityMultiConverter}">
+                <Binding Path="Value" ElementName="Root"/>
+                <Binding Path="TargetValue" ElementName="Root"/>
+            </MultiBinding>
+        </ContentControl.Visibility>
+    </ContentControl>
+</UserControl>

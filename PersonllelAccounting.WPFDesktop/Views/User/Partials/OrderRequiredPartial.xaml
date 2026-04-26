@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.Partials.OrderRequiredPartial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
+
+	<StackPanel>
+		<components:KeyValueHorizontalGrid Key="Номер приказа"
+		                                   Value="{Binding Id}"
+		                                   Margin="0 0 0 10"/>
+
+		<components:KeyValueHorizontalGrid Key="Дата приказа"
+		                                   Value="{Binding Date,
+												Converter={StaticResource DateOrInfiniteConverter}}"
+		                                   Margin="0 0 0 10"/>
+
+		<components:KeyValueHorizontalGrid Key="Дата вступления в силу"
+		                                   Value="{Binding StartDate,
+												Converter={StaticResource DateOrInfiniteConverter}}"
+		                                   Margin="0 0 0 10"/>
+
+		<components:KeyValueHorizontalGrid Key="Дата окончания действия"
+		                                   Value="{Binding EndDate,
+												Converter={StaticResource DateOrInfiniteConverter}}"
+		                                   Margin="0 0 0 10"/>
+
+		<components:KeyValueHorizontalGrid Key="Сотрудник"
+		                                   Value="{Binding Employee.FullName}"
+		                                   Margin="0 0 0 10"/>
+
+		<components:KeyValueHorizontalGrid Key="Статус"
+		                                   Value="{Binding Status,
+												Converter={StaticResource EnumToDisplayNameConverter}}"
+		                                   Margin="0 0 0 10"/>
+	</StackPanel>
+</UserControl>

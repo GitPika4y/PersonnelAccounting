@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.Partials.EmployeePersonalDataAddEditPartial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
+    <Grid Margin="0 20 0 0"
+          IsSharedSizeScope="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" SharedSizeGroup="Fullname"/>
+            <ColumnDefinition Width="*" SharedSizeGroup="Fullname"/>
+            <ColumnDefinition Width="*" SharedSizeGroup="Fullname"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Column="0"
+                 Grid.Row="0"
+                 Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+                 md:HintAssist.Hint="Фамилия"
+                 Margin="20 0"/>
+        <TextBox Grid.Column="1"
+                 Grid.Row="0"
+                 Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
+                 md:HintAssist.Hint="Имя"
+                 Margin="20 0"/>
+        <TextBox Grid.Column="2"
+                 Grid.Row="0"
+                 Text="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}"
+                 md:HintAssist.Hint="Отчество"
+                 Margin="20 0"/>
+
+        <StackPanel Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="1"
+                    Margin="20">
+
+            <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                     md:HintAssist.Hint="Номер телефона"/>
+
+            <DatePicker SelectedDate="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0 20"
+                        md:HintAssist.Hint="Дата рождения"/>
+
+            <components:EnumComboBox ItemsSource="{Binding Genders}"
+                                     SelectedItem="{Binding Gender}"
+                                     md:HintAssist.Hint="Пол"/>
+
+
+            <TextBox Text="{Binding Inn, UpdateSourceTrigger=PropertyChanged}"
+                     md:HintAssist.Hint="ИНН"
+                     Margin="0 20 0 0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

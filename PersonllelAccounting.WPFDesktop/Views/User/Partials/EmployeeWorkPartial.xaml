@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.Partials.EmployeeWorkPartial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0 0 0 10">
+            <components:KeyValueHorizontalGrid Key="Принят на работу с"
+                                      Value="{Binding Employee.InWorkSince,
+										Converter={StaticResource DateOrInfiniteConverter}}"
+                                      UseTextBox="True"
+                                      Margin="0 0 10 0"/>
+
+            <components:KeyValueHorizontalGrid Key="по"
+                                      Value="{Binding Employee.InWorkUntil,
+										Converter={StaticResource DateOrInfiniteConverter}}"
+                                      UseTextBox="True"
+                                      Margin="10 0 0 0"/>
+        </StackPanel>
+
+        <components:KeyValueHorizontalGrid Key="Должность"
+                                  Value="{Binding Employee.Position.Title}"
+                                  UseTextBox="True"
+                                  Margin="0 0 0 10"/>
+
+        <components:KeyValueHorizontalGrid Key="Ставка"
+                                  Value="{Binding Employee.Position.Salary}"
+                                  UseTextBox="True"
+                                  Margin="0 0 0 10"/>
+
+        <Button Content="Основание приема на работу"
+                Command="{Binding OpenDetailOrderCommand}"
+                CommandParameter="{Binding Employee.HireOrder}"/>
+    </StackPanel>
+</UserControl>

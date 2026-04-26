@@ -24,14 +24,13 @@
 
         <md:Card Grid.Column="1"
                  Grid.Row="1"
-                 Background="Moccasin"
-                 >
+                 Background="Moccasin">
             <views:SideBarView Content="{Binding SideBarViewModel}"/>
         </md:Card>
 
         <md:Card Grid.Column="3"
                  Grid.Row="1">
-            <ContentControl Content="{Binding SideBarViewModel.NavigationService.CurrentViewModel}"/>
+            <ContentControl Content="{Binding NavigationService.CurrentViewModel}"/>
         </md:Card>
     </Grid>
 </UserControl>

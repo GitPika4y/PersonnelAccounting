@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.Partials.OrderFirePartial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:components="clr-namespace:WPF_Desktop.Components">
+
+	<components:KeyValueHorizontalGrid Key="Причина увольнения"
+	                                   Value="{Binding FireReason}"/>
+</UserControl>

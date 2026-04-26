@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.EmployeeAddEditModalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:partials="clr-namespace:WPF_Desktop.Views.User.Partials">
+
+    <StackPanel Margin="20">
+        <!-- TITLE -->
+        <TextBlock Text="{Binding Title}"
+                   Style="{StaticResource MaterialDesignDisplaySmallTextBlock}"
+                   Margin="10"/>
+
+        <!-- CONTENT -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      MaxHeight="650">
+            <StackPanel Margin="10">
+                <GroupBox Header="Персональные данные"
+                          Margin="10"
+                          FontSize="16">
+                    <partials:EmployeePersonalDataAddEditPartial/>
+                </GroupBox>
+                <GroupBox Header="Паспорт"
+                          Margin="10"
+                          FontSize="16">
+                    <partials:EmployeePassportAddEditPartial/>
+                </GroupBox>
+                <GroupBox Header="Образование"
+                          Margin="10"
+                          FontSize="16">
+                    <partials:EmployeeEducationAddEditPartial/>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ACTION BUTTONS -->
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Content="{Binding ConfirmButtonText}"
+                    Command="{Binding SaveCommand}"
+                    Margin="0 0 10 0"/>
+
+            <Button Grid.Column="1"
+                    Content="Закрыть"
+                    Command="{x:Static md:DialogHost.CloseDialogCommand}"
+                    Margin="10 0 0 0"
+                    Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
+        </Grid>
+    </StackPanel>
+</UserControl>

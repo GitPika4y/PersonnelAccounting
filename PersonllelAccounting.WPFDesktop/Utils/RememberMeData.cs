@@ -2,7 +2,7 @@
 
 public class RememberMeData(string login)
 {
-    private static DateTime CreateExpireDate() => DateTime.Now.AddSeconds(10);
+    private static DateTime CreateExpireDate() => DateTime.Now.AddDays(1);
 
     public string Login { get; } = login;
     public DateTime ExpireDate { get; set; } = CreateExpireDate();

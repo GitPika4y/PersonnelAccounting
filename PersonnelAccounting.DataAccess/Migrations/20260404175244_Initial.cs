@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Data.Migrations
 {
     /// <inheritdoc />
@@ -26,25 +24,34 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "EmployeeEducations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Inn = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Passport = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Qualification = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GraduationYear = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.CheckConstraint("CH_Employee_BirthDate", "[BirthDate] <= GETDATE()");
-                    table.CheckConstraint("CH_Employee_Inn", "LEN([Inn]) IN (12, 14)");
-                    table.CheckConstraint("CH_Employee_Passport", "LEN([Passport]) = 11 AND [Passport] LIKE '[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]'");
-                    table.CheckConstraint("CH_Employee_PhoneNumber", "LEN([PhoneNumber]) BETWEEN 10 AND 14");
+                    table.PrimaryKey("PK_EmployeeEducations", x => x.Id);
+                    table.CheckConstraint("CH_EmployeeEducation_Qualification", "[Qualification] IN ('Secondary','SecondarySpecial','Bachelor','Master','Specialist','PhD')");
+                    table.CheckConstraint("CH_EmployeeEducation_Specialization", "[Specialization] IN ('SoftwareEngineering','InformationSystems','AppliedInformatics','CyberSecurity','Economics','Accounting','Finance','Management','HumanResources','Marketing','Law','PublicAdministration','Logistics','CivilEngineering','ElectricalEngineering')");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeePassports",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Serial = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GivenBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeePassports", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,6 +81,42 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.CheckConstraint("CH_User_Role", "[Role] IN ('Admin','User')");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Inn = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PassportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EducationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.CheckConstraint("CH_Employee_BirthDate", "[BirthDate] <= GETDATE()");
+                    table.CheckConstraint("CH_Employee_Gender", "[Gender] IN ('Male','Female')");
+                    table.CheckConstraint("CH_Employee_Inn", "LEN([Inn]) IN (12, 14)");
+                    table.CheckConstraint("CH_Employee_PhoneNumber", "LEN([PhoneNumber]) BETWEEN 10 AND 16");
+                    table.ForeignKey(
+                        name: "FK_Employees_EmployeeEducations_EducationId",
+                        column: x => x.EducationId,
+                        principalTable: "EmployeeEducations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_EmployeePassports_PassportId",
+                        column: x => x.PassportId,
+                        principalTable: "EmployeePassports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,18 +158,28 @@ namespace Data.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Login", "Password", "Role", "Username" },
-                values: new object[,]
-                {
-                    { new Guid("3ec860f5-bfd3-46d6-9168-2ef53050f121"), "admin", "$2a$11$OswhLeNo0PGwGSGnI0RwTONRZtZUfgw656L0CbJtjY0/L00pvpyea", "Admin", null },
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Departments_Title",
                 table: "Departments",
                 column: "Title",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeePassports_Number",
+                table: "EmployeePassports",
+                column: "Number",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeePassports_Serial",
+                table: "EmployeePassports",
+                column: "Serial",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_EducationId",
+                table: "Employees",
+                column: "EducationId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -136,9 +189,9 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_Passport",
+                name: "IX_Employees_PassportId",
                 table: "Employees",
-                column: "Passport",
+                column: "PassportId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -192,6 +245,12 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Positions");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeEducations");
+
+            migrationBuilder.DropTable(
+                name: "EmployeePassports");
         }
     }
 }

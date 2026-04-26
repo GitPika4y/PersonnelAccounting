@@ -62,7 +62,7 @@
 
                 <Button Content="Входили ранее?"
                         Margin="10 0 0 0"
-                        Style="{StaticResource MaterialDesignFlatLightBgButton}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
                         FontSize="18"
                         Command="{Binding AuthenticateCommand}"/>
             </StackPanel>

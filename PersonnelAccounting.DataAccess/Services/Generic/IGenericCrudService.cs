@@ -4,8 +4,7 @@ namespace Data.Services.Generic;
 
 public interface IGenericCrudService<T> where T : class
 {
-    Task<IReadOnlyCollection<T>> GetAllAsync();
-    Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>> filter);
+    Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null);
     Task<T?> GetByIdAsync(Guid id);
     Task AddAsync(T entity);
     Task UpdateAsync(T entity);

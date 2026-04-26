@@ -1,4 +1,5 @@
-﻿using Data.Models.Main;
+﻿using Data.Extensions;
+using Data.Models.Main;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,24 +11,26 @@ public class EmployeeConfiguration: IEntityTypeConfiguration<Employee>
     {
         builder.HasKey(e => e.Id);
 
+        builder.Property(e => e.Gender)
+            .HasConversion<string>();
+
         builder.ToTable(t =>
         {
-            // Passport Regex "####-######"
-            t.HasCheckConstraint(
-                "CH_Employee_Passport",
-                "LEN([Passport]) = 11 AND [Passport] LIKE '[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]'");
-
             t.HasCheckConstraint(
                 "CH_Employee_Inn",
                 "LEN([Inn]) IN (12, 14)");
 
             t.HasCheckConstraint(
                 "CH_Employee_PhoneNumber",
-                "LEN([PhoneNumber]) BETWEEN 10 AND 14");
+                "LEN([PhoneNumber]) BETWEEN 10 AND 16");
 
             t.HasCheckConstraint(
                 "CH_Employee_BirthDate",
                 "[BirthDate] <= GETDATE()");
+
+            t.HasCheckConstraint(
+                "CH_Employee_Gender",
+                EnumExtensions.EnumToSqlQuery<Employee>(typeof(EmployeeGender), e => e.Gender));
         });
     }
 }

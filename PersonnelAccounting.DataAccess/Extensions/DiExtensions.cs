@@ -22,8 +22,11 @@ public static class DiExtensions
     {
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IOrderTypeService, OrderTypeService>();
 
         services.AddSingleton(typeof(IGenericCrudService<>), typeof(GenericCrudService<>));
+        services.AddSingleton(typeof(IGenericCrudPaginationService<>), typeof(GenericCrudPaginationService<>));
+        services.AddSingleton<DbInitializer>();
     }
 
     public static void ProvideDataAccessLibrary(this IServiceCollection services)

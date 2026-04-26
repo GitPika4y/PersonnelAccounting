@@ -20,14 +20,5 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Role)
             .HasConversion<string>();
-
-        builder.HasData(
-            new User
-            {
-                Id = Guid.NewGuid(),
-                Role = UserRole.Admin,
-                Login = "admin",
-                Password = "$2a$11$OswhLeNo0PGwGSGnI0RwTONRZtZUfgw656L0CbJtjY0/L00pvpyea" // admin123
-            });
     }
 }

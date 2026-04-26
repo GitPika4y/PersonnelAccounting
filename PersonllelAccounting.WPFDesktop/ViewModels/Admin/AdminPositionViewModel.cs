@@ -30,7 +30,7 @@ public partial class AdminPositionViewModel: ViewModelBase
         var resource = await _useCase.GetAllAsync();
         await HandleResource(
             resource,
-            positions => UpdateObservableCollection(Positions, positions.ToList()));
+            positions => UpdateObservableCollection(Positions, positions));
     }
 
     [RelayCommand]

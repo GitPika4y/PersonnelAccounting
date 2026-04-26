@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.Includes.EmployeeCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:components="clr-namespace:WPF_Desktop.Components"
+             Name="Root">
+
+    <md:Card Style="{StaticResource OutlinedCard}"
+             Padding="10"
+             FontSize="18">
+        <StackPanel>
+            <TextBlock Text="{Binding FullName}"
+                       Style="{StaticResource MaterialDesignHeadlineSmallTextBlock}"
+                       Margin="10"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       FontWeight="Bold"/>
+
+            <components:KeyValueBlock Key="Должность"
+                                      Value="{Binding Position.Title, Mode=OneWay}"
+                                      Margin="5"
+                                      Visibility="{Binding Position,
+                                        Converter={StaticResource NotNullToVisibilityConverter}}"/>
+
+            <components:KeyValueBlock Key="Статус"
+                                      Value="{Binding Status, Mode=OneWay,
+                                        Converter={StaticResource EnumToDisplayNameConverter}}"
+                                      Margin="5"/>
+
+            <Button Content="Подробнее"
+                    Command="{Binding OnDetailClickCommand,
+                        ElementName=Root}"
+                    CommandParameter="{Binding}"
+                    Margin="10"
+                    Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
+                    Visibility="{Binding IsSelected,
+                        RelativeSource={RelativeSource AncestorType=ListBoxItem},
+                        Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </StackPanel>
+    </md:Card>
+</UserControl>

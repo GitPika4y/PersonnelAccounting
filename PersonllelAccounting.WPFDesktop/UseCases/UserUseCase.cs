@@ -7,10 +7,7 @@ namespace WPF_Desktop.UseCases;
 
 public class UserUseCase(IUserService service): UseCaseBase, IUserUseCase
 {
-    public async Task<Resource<IReadOnlyCollection<User>>> GetAll() =>
-        await SafeCallAsync(service.GetAllAsync);
-
-    public async Task<Resource<IReadOnlyCollection<User>>> GetAll(Expression<Func<User, bool>> filter) =>
+    public async Task<Resource<IReadOnlyCollection<User>>> GetAll(Expression<Func<User, bool>>? filter = null) =>
         await SafeCallAsync(() => service.GetAllAsync(filter));
 
     public async Task<Resource> Add(User user) =>

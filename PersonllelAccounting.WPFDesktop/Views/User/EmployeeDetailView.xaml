@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.EmployeeDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:partials="clr-namespace:WPF_Desktop.Views.User.Partials"
+             xmlns:components="clr-namespace:WPF_Desktop.Components"
+             xmlns:includes="clr-namespace:WPF_Desktop.Views.User.Includes"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Name="Root"
+             >
+
+		<Grid Margin="20">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+
+			<!-- TITLE -->
+			<TextBlock Grid.Row="0"
+			           Text="Карточка сотрудника"
+			           Style="{StaticResource MaterialDesignDisplaySmallTextBlock}"
+			           HorizontalAlignment="Center"
+			           Margin="20"/>
+
+			<!-- CONTENT -->
+			<ScrollViewer Grid.Row="1">
+				<StackPanel>
+					<!-- EMPLOYEE DATA -->
+					<Expander Margin="0 10">
+						<Expander.Header>
+							<TextBlock Text="Данные сотрудника"
+							           Style="{StaticResource MaterialDesignHeadlineMediumTextBlock}"/>
+						</Expander.Header>
+
+						<TabControl Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+						            FontSize="18"
+						            Margin="0 0 0 10">
+							<TabItem Header="Основные данные" Width="Auto" Padding="10 0">
+								<partials:EmployeePersonalDataPartial Margin="10"/>
+							</TabItem>
+							<TabItem Header="Образование" Width="Auto" Padding="10 0">
+								<partials:EmployeeEducationPartial Margin="10"/>
+							</TabItem>
+							<TabItem Header="Паспорт" Width="Auto" Padding="10 0">
+								<partials:EmployeeDocumentsPartial Margin="10"/>
+							</TabItem>
+							<TabItem Header="Должность" Width="Auto" Padding="10 0"
+							         Visibility="{Binding Employee.IsWorking,
+			                        Converter={StaticResource BoolToVisibilityConverter}}">
+								<partials:EmployeeWorkPartial Margin="10"/>
+							</TabItem>
+						</TabControl>
+					</Expander>
+
+					<!-- EMPLOYEE ORDERS -->
+					<Expander Margin="0 10">
+						<Expander.Header>
+							<TextBlock Text="Приказы"
+							           Style="{StaticResource MaterialDesignHeadlineMediumTextBlock}"/>
+						</Expander.Header>
+
+						<md:Card Padding="10"
+						         Background="#f1f1f1">
+							<components:PaginationControl>
+								<ListBox ItemsSource="{Binding Orders}">
+									<ListBox.ItemsPanel>
+										<ItemsPanelTemplate>
+											<WrapPanel />
+										</ItemsPanelTemplate>
+									</ListBox.ItemsPanel>
+
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<includes:OrderCard OnDetailClickCommand="{Binding DataContext.OpenDetailOrderCommand,
+																	RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+							</components:PaginationControl>
+						</md:Card>
+					</Expander>
+				</StackPanel>
+			</ScrollViewer>
+
+
+			<Button Grid.Row="2"
+			        Content="Добавить приказ"
+			        Command="{Binding AddOrderCommand}"/>
+		</Grid>
+</UserControl>

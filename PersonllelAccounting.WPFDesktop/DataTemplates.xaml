@@ -5,7 +5,10 @@
                     xmlns:vmModal="clr-namespace:WPF_Desktop.ViewModels.Modal"
                     xmlns:viewsModal="clr-namespace:WPF_Desktop.Views.Modal"
                     xmlns:vmAdmin="clr-namespace:WPF_Desktop.ViewModels.Admin"
-                    xmlns:viewsAdmin="clr-namespace:WPF_Desktop.Views.Admin">
+                    xmlns:viewsAdmin="clr-namespace:WPF_Desktop.Views.Admin"
+                    xmlns:vmUser="clr-namespace:WPF_Desktop.ViewModels.User"
+                    xmlns:viewsUser="clr-namespace:WPF_Desktop.Views.User"
+                    >
 
     <!-- MAIN -->
     <DataTemplate DataType="{x:Type vm:AuthViewModel}">
@@ -47,6 +50,31 @@
 
     <DataTemplate DataType="{x:Type vmAdmin:AdminPositionAddEditModalViewModel}">
         <viewsAdmin:AdminPositionAddEditModalView/>
+    </DataTemplate>
+
+    <!-- USER -->
+    <DataTemplate DataType="{x:Type vmUser:UserEmployeeViewModel}">
+        <viewsUser:UserEmployeeView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmUser:UserOrderViewModel}">
+        <viewsUser:UserOrderView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmUser:EmployeeAddEditModalViewModel}">
+        <viewsUser:EmployeeAddEditModalView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmUser:EmployeeDetailViewModel}">
+        <viewsUser:EmployeeDetailView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmUser:OrderAddModalViewModel}">
+        <viewsUser:OrderAddModalView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmUser:OrderDetailModalViewModel}">
+	    <viewsUser:OrderDetailModalView/>
     </DataTemplate>
 
     <!-- MODALS -->

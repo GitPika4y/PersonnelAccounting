@@ -2,6 +2,7 @@
 using Data.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using WPF_Desktop.Services;
+using WPF_Desktop.Utils;
 using WPF_Desktop.ViewModels;
 
 namespace WPF_Desktop;
@@ -11,14 +12,18 @@ namespace WPF_Desktop;
 /// </summary>
 public partial class App : Application
 {
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         var services = new ServiceCollection();
         services.ProvideDataAccessLibrary();
         services.ProvideDependencies();
-        var  serviceProvider = services.BuildServiceProvider();
+        var serviceProvider = services.BuildServiceProvider();
 
-        var navigationService = serviceProvider.GetRequiredService<INavigationService>();
+        var dbInitializer = serviceProvider.GetRequiredService<DbInitializer>();
+        await dbInitializer.Initialize();
+
+        var navigationRegistry = serviceProvider.GetRequiredService<NavigationRegistry>();
+        var navigationService = navigationRegistry.Get(NavigationRegion.Window);
         var window = serviceProvider.GetRequiredService<MainWindow>();
 
         navigationService.Navigate<AuthViewModel>();
