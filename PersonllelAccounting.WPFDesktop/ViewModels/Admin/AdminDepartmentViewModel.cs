@@ -7,7 +7,7 @@ using WPF_Desktop.Utils;
 
 namespace WPF_Desktop.ViewModels.Admin;
 
-public partial class AdminDepartmentViewModel: ViewModelBase
+public partial class AdminDepartmentViewModel: ViewModelPagination<Department>
 {
     private readonly IDepartmentUseCase _useCase;
 
@@ -27,11 +27,14 @@ public partial class AdminDepartmentViewModel: ViewModelBase
 
     private async Task UpdateDepartments()
     {
-        var resource = await _useCase.GetAllAsync();
+        var resource = await _useCase.GetAllAsync(SelectedPage, SelectedPageSize);
         await HandleResource(
             resource,
-            departments => UpdateObservableCollection(Departments, departments)
-            );
+            paginationModel =>
+            {
+                UpdateObservableCollection(Departments, paginationModel.Items);
+                Pagination =  paginationModel;
+            } );
     }
 
     [RelayCommand]
@@ -74,5 +77,10 @@ public partial class AdminDepartmentViewModel: ViewModelBase
                 await HandleResourceMessage(failedResource, "");
                 break;
         }
+    }
+
+    protected override async Task UpdatePaginationCollection()
+    {
+        await UpdateDepartments();
     }
 }

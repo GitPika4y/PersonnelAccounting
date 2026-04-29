@@ -18,14 +18,16 @@ public partial class SideBarViewModel: ViewModelBase
             [
                 new SideBarItem(PackIconKind.AccountBoxMultipleOutline, "Пользователи", typeof(AdminUserViewModel)),
                 new SideBarItem(PackIconKind.AccountGroupOutline, "Отделы", typeof(AdminDepartmentViewModel)),
-                new SideBarItem(PackIconKind.BadgeAccountHorizontalOutline, "Должности", typeof(AdminPositionViewModel))
+                new SideBarItem(PackIconKind.BadgeAccountHorizontalOutline, "Должности", typeof(AdminPositionViewModel)),
+                new SideBarItem(PackIconKind.ChartArc, "Статистика", typeof(StatisticsViewModel)),
             ]
         },
         {
             UserRole.User ,
             [
                 new SideBarItem(PackIconKind.AccountTie, "Сотрудники", typeof(UserEmployeeViewModel)),
-                new SideBarItem(PackIconKind.FileSign, "Приказы", typeof(UserOrderViewModel))
+                new SideBarItem(PackIconKind.FileSign, "Приказы", typeof(UserOrderViewModel)),
+                new SideBarItem(PackIconKind.ChartArc, "Статистика", typeof(StatisticsViewModel)),
             ]
         }
     };

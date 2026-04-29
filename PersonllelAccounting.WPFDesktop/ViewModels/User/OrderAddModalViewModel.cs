@@ -48,7 +48,7 @@ public partial class OrderAddModalViewModel: ViewModelPagination<Employee>
 
     protected override async Task UpdatePaginationCollection()
     {
-        var resource = await _employeeUseCase.GetAllAsync(SelectedPage, SelectedPageSize);
+        var resource = await _employeeUseCase.GetAllPagesAsync(SelectedPage, SelectedPageSize);
         await HandleResource(
             resource,
             paginationModel =>

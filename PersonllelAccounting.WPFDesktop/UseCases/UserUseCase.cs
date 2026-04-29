@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Data.Models;
 using Data.Models.Auth;
 using Data.Services.Main;
 using WPF_Desktop.Utils;
@@ -7,6 +8,9 @@ namespace WPF_Desktop.UseCases;
 
 public class UserUseCase(IUserService service): UseCaseBase, IUserUseCase
 {
+    public async Task<Resource<PaginationModel<User>>> GetAll(int page, int pageSize, Expression<Func<User, bool>>? filter = null) =>
+        await SafeCallAsync(() => service.GetAllPagesAsync(page, pageSize, filter));
+
     public async Task<Resource<IReadOnlyCollection<User>>> GetAll(Expression<Func<User, bool>>? filter = null) =>
         await SafeCallAsync(() => service.GetAllAsync(filter));
 

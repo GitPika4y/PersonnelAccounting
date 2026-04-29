@@ -39,7 +39,7 @@ public class Employee : EntityModel
         $"{LastName} {FirstName} {MiddleName}".Trim();
 
     public bool IsWorking =>
-        GetLastOrder(o => o.Type is OrderType.Hire or OrderType.Fire)?.Type
+        GetLastOrder(o => o.Type is OrderType.Hire or OrderType.Fire && o.Status is OrderStatus.Active)?.Type
             == OrderType.Hire;
 
     public EmployeeStatus Status
@@ -77,4 +77,7 @@ public class Employee : EntityModel
 
     public Position? Position =>
         HireOrder?.HirePosition;
+
+    public Department? Department =>
+        HireOrder?.HireDepartment;
 }

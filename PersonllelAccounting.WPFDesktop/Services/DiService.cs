@@ -18,6 +18,7 @@ public static class DiService
         services.AddTransient<MainViewModel>();
         services.AddTransient<SideBarViewModel>();
         services.AddTransient<SettingsViewModel>();
+        services.AddTransient<StatisticsViewModel>();
 
         // ADMIN
         services.AddTransient<AdminUserViewModel>();
