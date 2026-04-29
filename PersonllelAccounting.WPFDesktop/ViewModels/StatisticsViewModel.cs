@@ -50,11 +50,32 @@ public partial class StatisticsViewModel(
 
     public async Task InitializeAsync()
     {
-        await DrawEmployeesHireChart();
         await DrawOrdersTypeChart();
+        await DrawEmployeesHireChart();
         await DrawEmployeesDepartmentPositionChart();
         await DrawNewOrdersChart();
         await CalculateStatistics();
+    }
+
+    private async Task DrawOrdersTypeChart()
+    {
+        OrdersTypePieSeries.Clear();
+
+        var orderResource = await orderUseCase.GetAllAsync();
+
+        await HandleResource(
+            orderResource,
+            orders =>
+            {
+                var groupedByType = orders.GroupBy(o => o.Type)
+                    .Select(g => new {Type = g.Key, Count = g.Count()});
+
+                foreach (var group in groupedByType)
+                {
+                    var pieSeries = new PieSeries<int>(group.Count) { Name = group.Type.GetDisplayName() };
+                    OrdersTypePieSeries.Add(pieSeries);
+                }
+            });
     }
 
     private async Task DrawEmployeesHireChart()
@@ -108,27 +129,6 @@ public partial class StatisticsViewModel(
 
                 EmployeeHireCartesianXAxes.Add(new Axis { Labels = dates });
             } );
-    }
-
-    private async Task DrawOrdersTypeChart()
-    {
-        OrdersTypePieSeries.Clear();
-
-        var orderResource = await orderUseCase.GetAllAsync();
-
-        await HandleResource(
-            orderResource,
-            orders =>
-            {
-                var groupedByType = orders.GroupBy(o => o.Type)
-                    .Select(g => new {Type = g.Key, Count = g.Count()});
-
-                foreach (var group in groupedByType)
-                {
-                    var pieSeries = new PieSeries<int>(group.Count) { Name = group.Type.GetDisplayName() };
-                    OrdersTypePieSeries.Add(pieSeries);
-                }
-            });
     }
 
     private async Task DrawEmployeesDepartmentPositionChart()
@@ -194,7 +194,7 @@ public partial class StatisticsViewModel(
                     .ToList();
 
                 var values = groupedByDate.Select(o => o.Count).ToList();
-                var dates = orders.Select(o => o.Date.ToDateString()).ToList();
+                var dates = groupedByDate.Select(o => o.Date.ToDateString()).ToList();
 
                 var series = new LineSeries<int>(values);
                 var axis = new Axis {Labels = dates};
