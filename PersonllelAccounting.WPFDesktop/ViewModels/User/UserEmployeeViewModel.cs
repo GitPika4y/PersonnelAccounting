@@ -30,7 +30,7 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
 
     protected override async Task UpdatePaginationCollection()
     {
-        var resource = await _useCase.GetAllAsync(SelectedPage, SelectedPageSize);
+        var resource = await _useCase.GetAllPagesAsync(SelectedPage, SelectedPageSize);
         await HandleResource(
             resource,
             pagination =>

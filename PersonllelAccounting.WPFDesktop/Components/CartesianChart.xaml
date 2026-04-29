@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="WPF_Desktop.Components.CartesianChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             Name="Root">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+
+		<TextBlock Text="{Binding Title, ElementName=Root}"
+		           FontSize="{Binding TextSize, ElementName=Root}"
+		           HorizontalAlignment="Center"
+		           TextWrapping="Wrap"
+		           FontWeight="Bold"/>
+
+		<lvc:CartesianChart Grid.Row="1"
+		                    Series="{Binding Series, ElementName=Root}"
+		                    XAxes="{Binding XAxes, ElementName=Root}" />
+	</Grid>
+</UserControl>

@@ -7,7 +7,7 @@ using WPF_Desktop.Utils;
 
 namespace WPF_Desktop.ViewModels.Admin;
 
-public partial class AdminUserViewModel: ViewModelBase
+public partial class AdminUserViewModel: ViewModelPagination<Data.Models.Auth.User>
 {
     private readonly IUserUseCase _useCase;
     private readonly ISessionService _sessionService;
@@ -27,14 +27,17 @@ public partial class AdminUserViewModel: ViewModelBase
 
     private async Task UpdateUserCollection()
     {
-        var resource = await _useCase.GetAll();
+        var resource = await _useCase.GetAll(SelectedPage, SelectedPageSize);
         await HandleResource(
             resource,
-            users => UpdateObservableCollection(Users, users));
+            paginationModel =>
+            {
+                UpdateObservableCollection(Users, paginationModel.Items);
+                Pagination = paginationModel;
+            });
     }
 
     private bool CanEdit() => SelectedUser is not null && _sessionService.GetCurrentUser().Id != SelectedUser.Id;
-
 
     [RelayCommand]
     private async Task AddUser()
@@ -79,5 +82,10 @@ public partial class AdminUserViewModel: ViewModelBase
                 await HandleResourceMessage(failureResource, "");
                 break;
         }
+    }
+
+    protected override async Task UpdatePaginationCollection()
+    {
+        await UpdateUserCollection();
     }
 }

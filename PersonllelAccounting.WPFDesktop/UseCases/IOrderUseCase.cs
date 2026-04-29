@@ -7,6 +7,7 @@ namespace WPF_Desktop.UseCases;
 
 public interface IOrderUseCase
 {
+    Task<Resource<IReadOnlyCollection<Order>>> GetAllAsync(Expression<Func<Order, bool>>? filter = null);
     Task<Resource<PaginationModel<Order>>> GetAllAsync(int page, int pageSize, Expression<Func<Order, bool>>? filter = null);
     Task<Resource> AddAsync(Order order);
     Task<Resource> UpdateAsync(Order order);

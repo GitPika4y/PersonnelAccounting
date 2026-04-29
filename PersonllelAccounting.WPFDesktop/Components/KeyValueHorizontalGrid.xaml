@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="AUTO"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0"
                    Text="{Binding Key, RelativeSource={RelativeSource AncestorType=UserControl}, StringFormat={}{0}: }"
                    FontWeight="Bold"
                    VerticalAlignment="Center"
-                   Margin="0 0 15 0"/>
+                   Margin="0 0 15 0"
+                   TextWrapping="Wrap"/>
 
         <TextBlock Grid.Column="1"
                    Text="{Binding Value, RelativeSource={RelativeSource AncestorType=UserControl}}"

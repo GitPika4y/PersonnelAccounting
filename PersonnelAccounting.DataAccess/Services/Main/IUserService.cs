@@ -3,7 +3,7 @@ using Data.Services.Generic;
 
 namespace Data.Services.Main;
 
-public interface IUserService: IGenericCrudService<User>
+public interface IUserService: IGenericCrudPaginationService<User>
 {
     
 }

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:components="clr-namespace:WPF_Desktop.Components"
+             xmlns:models="clr-namespace:Data.Models.Main;assembly=PersonnelAccounting.DataAccess"
              Name="Root">
 
     <md:Card Style="{StaticResource OutlinedCard}"
@@ -18,9 +19,14 @@
 
             <components:KeyValueBlock Key="Должность"
                                       Value="{Binding Position.Title, Mode=OneWay}"
-                                      Margin="5"
-                                      Visibility="{Binding Position,
-                                        Converter={StaticResource NotNullToVisibilityConverter}}"/>
+                                      Margin="5">
+	            <components:KeyValueBlock.Visibility>
+		            <MultiBinding Converter="{StaticResource InvertIntersectionToVisibilityConverter}">
+			            <Binding Path="Status"/>
+			            <Binding Source="{x:Static models:EmployeeStatus.NotWorking}"/>
+		            </MultiBinding>
+	            </components:KeyValueBlock.Visibility>
+            </components:KeyValueBlock>
 
             <components:KeyValueBlock Key="Статус"
                                       Value="{Binding Status, Mode=OneWay,

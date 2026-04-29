@@ -23,6 +23,11 @@
                                   UseTextBox="True"
                                   Margin="0 0 0 10"/>
 
+        <components:KeyValueHorizontalGrid Key="Отдел"
+                                  Value="{Binding Employee.Department.Title}"
+                                  UseTextBox="True"
+                                  Margin="0 0 0 10"/>
+
         <components:KeyValueHorizontalGrid Key="Ставка"
                                   Value="{Binding Employee.Position.Salary}"
                                   UseTextBox="True"
