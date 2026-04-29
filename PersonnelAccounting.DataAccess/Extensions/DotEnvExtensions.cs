@@ -14,7 +14,7 @@ public static class DotEnvExtensions
         var envPath = Path.Combine(basePath, ".env");
 
         if (!File.Exists(envPath))
-            throw new FileNotFoundException($".env not found: {envPath}");
+            throw new FileNotFoundException($".env не найден по пути: {envPath}.\n Убедитесь, что он есть и содержит строку подключения CONNECTION_STRING к серверу БД");
 
         Env.Load(envPath);
         _isLoaded = true;
@@ -25,6 +25,6 @@ public static class DotEnvExtensions
         LoadEnv();
 
         return Environment.GetEnvironmentVariable("CONNECTION_STRING")
-               ?? throw new InvalidOperationException("CONNECTION_STRING not found in .env");
+               ?? throw new InvalidOperationException("Строка подключения CONNECTION_STRING не найдена в .env.");
     }
 }

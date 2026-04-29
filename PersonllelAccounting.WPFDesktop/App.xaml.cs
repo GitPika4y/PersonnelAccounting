@@ -12,19 +12,30 @@ namespace WPF_Desktop;
 /// </summary>
 public partial class App : Application
 {
+    private IServiceProvider _serviceProvider;
     protected override async void OnStartup(StartupEventArgs e)
     {
         var services = new ServiceCollection();
-        services.ProvideDataAccessLibrary();
-        services.ProvideDependencies();
-        var serviceProvider = services.BuildServiceProvider();
 
-        var dbInitializer = serviceProvider.GetRequiredService<DbInitializer>();
-        await dbInitializer.Initialize();
+        try
+        {
+            services.ProvideDataAccessLibrary();
+            services.ProvideDependencies();
+            _serviceProvider = services.BuildServiceProvider();
 
-        var navigationRegistry = serviceProvider.GetRequiredService<NavigationRegistry>();
+            var dbInitializer = _serviceProvider.GetRequiredService<DbInitializer>();
+            await dbInitializer.Initialize();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show($"Ошибка: {exception.Message}");
+            Shutdown();
+            return;
+        }
+
+        var navigationRegistry = _serviceProvider.GetRequiredService<NavigationRegistry>();
         var navigationService = navigationRegistry.Get(NavigationRegion.Window);
-        var window = serviceProvider.GetRequiredService<MainWindow>();
+        var window = _serviceProvider.GetRequiredService<MainWindow>();
 
         navigationService.Navigate<AuthViewModel>();
 
