@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:components="clr-namespace:WPF_Desktop.Components"
              xmlns:includes="clr-namespace:WPF_Desktop.Views.User.Includes"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              Name="Root"
              >
     <Grid>
@@ -19,22 +20,42 @@
 
 
 	    <components:PaginationControl Grid.Row="1">
-		    <ScrollViewer>
-			    <ListBox ItemsSource="{Binding Orders}">
-					<ListBox.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel />
-						</ItemsPanelTemplate>
-					</ListBox.ItemsPanel>
+            <StackPanel>
+                <!--FILTERS-->
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding EmployeeNameFilter, UpdateSourceTrigger=PropertyChanged}"
+                             md:HintAssist.Hint="Поиск по сотруднику"
+                             Margin="0 0 10 0"/>
+                    <components:EnumComboBox ItemsSource="{Binding OrderTypes}"
+                                             SelectedItem="{Binding SelectedOrderType}"
+                                             md:HintAssist.Hint="Тип приказа"
+                                             Margin="0 0 10 0"/>
+                    <DatePicker SelectedDate="{Binding StartDateFilter, UpdateSourceTrigger=PropertyChanged}"
+                                md:HintAssist.Hint="Дата создания"
+                                Margin="0 0 10 0"/>
+                    <DatePicker SelectedDate="{Binding EndDateFilter, UpdateSourceTrigger=PropertyChanged}"
+                                md:HintAssist.Hint="Дата окончания"
+                                Margin="0 0 10 0"/>
+                </StackPanel>
+                
+                <!--CONTENT-->
+				<ScrollViewer>
+					<ListBox ItemsSource="{Binding Orders}">
+						<ListBox.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ListBox.ItemsPanel>
 
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<includes:OrderCard OnDetailClickCommand="{Binding DataContext.OpenDetailCommand,
-                                    RelativeSource={RelativeSource AncestorType=components:PaginationControl}}"/>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-		    </ScrollViewer>
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<includes:OrderCard OnDetailClickCommand="{Binding DataContext.OpenDetailCommand,
+										RelativeSource={RelativeSource AncestorType=components:PaginationControl}}"/>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+				</ScrollViewer>
+            </StackPanel>
         </components:PaginationControl>
 
 

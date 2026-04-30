@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Data.Models.Main;
 using Data.Services.Main;
@@ -17,6 +19,12 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
 
     public ObservableCollection<Order> Orders { get; } = [];
 
+    public IEnumerable<OrderType> OrderTypes { get; } = Enum.GetValues<OrderType>();
+    [ObservableProperty] private OrderType _selectedOrderType = OrderType.Hire;
+    [ObservableProperty] private string _employeeNameFilter = string.Empty;
+    [ObservableProperty] private DateTime? _startDateFilter = null;
+    [ObservableProperty] private DateTime? _endDateFilter = null;
+
     public UserOrderViewModel(
         IEmployeeUseCase employeeUseCase,
         IOrderTypeService orderTypeService,
@@ -32,13 +40,43 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
         _ = UpdatePaginationCollection();
     }
 
+    partial void OnSelectedOrderTypeChanged(OrderType value) => _ = UpdatePaginationCollection();
+    partial void OnEmployeeNameFilterChanged(string value) => _ = UpdatePaginationCollection();
+    partial void OnStartDateFilterChanged(DateTime? value) => _ = UpdatePaginationCollection();
+    partial void OnEndDateFilterChanged(DateTime? value) => _ = UpdatePaginationCollection();
+
     public async Task InitializeAsync()
     {
     }
 
     protected override async Task UpdatePaginationCollection()
     {
-        var resource = await _orderUseCase.GetAllAsync(SelectedPage, SelectedPageSize);
+        await Task.Delay(500);
+
+        Expression<Func<Order, bool>> dbFilter = o =>
+        // Тип (опционально)
+        (SelectedOrderType == null || o.Type == SelectedOrderType)
+
+        // Дата начала (опционально)
+        && (!StartDateFilter.HasValue || o.StartDate >= StartDateFilter.Value)
+
+        // Дата окончания (опционально)
+        && (!EndDateFilter.HasValue || (o.EndDate.HasValue && o.EndDate <= EndDateFilter.Value))
+
+        // Поиск по сотруднику
+        && (
+            string.IsNullOrWhiteSpace(EmployeeNameFilter)
+            || (
+                o.Employee != null &&
+                (
+                    o.Employee.FirstName.Contains(EmployeeNameFilter)
+                    || o.Employee.LastName.Contains(EmployeeNameFilter)
+                    || o.Employee.MiddleName.Contains(EmployeeNameFilter)
+                )
+            )
+        );
+
+        var resource = await _orderUseCase.GetAllAsync(SelectedPage, SelectedPageSize, dbFilter);
         await HandleResource(
             resource,
             paginationModel =>

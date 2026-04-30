@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Data.Models;
@@ -17,6 +18,14 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
     public ObservableCollection<Employee> Employees { get; } = [];
     [ObservableProperty] private Employee? _selectedEmployee;
 
+    [ObservableProperty] private string _nameFilter = string.Empty;
+
+    public IEnumerable<EmployeeStatus> EmployeeStatuses { get; } = Enum.GetValues<EmployeeStatus>();
+    [ObservableProperty] private EmployeeStatus _selectedEmployeeStatus;
+
+    partial void OnNameFilterChanged(string value) => _ = UpdatePaginationCollection();
+    partial void OnSelectedEmployeeStatusChanged(EmployeeStatus value) => _ = UpdatePaginationCollection();
+
     public UserEmployeeViewModel(IEmployeeUseCase useCase, NavigationRegistry navigationRegistry)
     {
         _useCase = useCase;
@@ -30,12 +39,23 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
 
     protected override async Task UpdatePaginationCollection()
     {
-        var resource = await _useCase.GetAllPagesAsync(SelectedPage, SelectedPageSize);
+        await Task.Delay(300);
+
+        Expression<Func<Employee, bool>> dbFilter = (e) =>
+            e.FirstName.Contains(NameFilter)
+            || e.LastName.Contains(NameFilter)
+            || e.MiddleName.Contains(NameFilter);
+
+        var resource = await _useCase.GetAllPagesAsync(SelectedPage, SelectedPageSize, dbFilter);
         await HandleResource(
             resource,
             pagination =>
             {
-                UpdateObservableCollection(Employees, pagination.Items);
+                var filteredItems = pagination.Items
+                    .Where(e => e.Status == SelectedEmployeeStatus)
+                    .ToList();
+
+                UpdateObservableCollection(Employees, filteredItems);
                 Pagination = pagination;
             } );
     }

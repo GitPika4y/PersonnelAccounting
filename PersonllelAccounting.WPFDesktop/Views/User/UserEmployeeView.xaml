@@ -21,6 +21,17 @@
 
         <!-- CONTENT -->
         <components:PaginationControl Grid.Row="1">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding NameFilter, UpdateSourceTrigger=PropertyChanged}"
+                             md:HintAssist.Hint="Поиск по имени"
+                             Margin="0 0 10 0"/>
+                    
+                    <components:EnumComboBox ItemsSource="{Binding EmployeeStatuses}"
+                                             SelectedItem="{Binding SelectedEmployeeStatus}"
+                                             md:HintAssist.Hint="Статус сотрудника"
+                                             Margin="0 0 10 0"/>
+                </StackPanel>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ListBox ItemsSource="{Binding Employees}"
                              SelectedItem="{Binding SelectedEmployee}"
@@ -47,6 +58,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </ScrollViewer>
+            </StackPanel>
         </components:PaginationControl>
 
         <!-- ACTION BUTTONS -->

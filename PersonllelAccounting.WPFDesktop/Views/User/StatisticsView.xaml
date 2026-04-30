@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="WPF_Desktop.Views.User.StatisticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="AUTO"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="AUTO"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Статистика"
+                   HorizontalAlignment="Center"/>
+
+    </Grid>
+</UserControl>
