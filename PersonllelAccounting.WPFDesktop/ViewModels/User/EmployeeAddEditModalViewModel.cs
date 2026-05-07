@@ -22,7 +22,7 @@ public partial class EmployeeAddEditModalViewModel: ViewModelBase
     [ObservableProperty] private string? _middleName;
     [ObservableProperty] [Required(ErrorMessage = "Обязательное поле")] [NotifyCanExecuteChangedFor(nameof(SaveCommand))] private EmployeeGender _gender;
     [ObservableProperty] [Required(ErrorMessage = "Обязательное поле")] [NotifyCanExecuteChangedFor(nameof(SaveCommand))] [Range(typeof(DateTime), "1900-01-01", "2026-01-01")] private DateTime _birthDate;
-    [ObservableProperty] [Required(ErrorMessage = "Обязательное поле")] [NotifyCanExecuteChangedFor(nameof(SaveCommand))] private string _phoneNumber = null!;
+    [ObservableProperty] [Required(ErrorMessage = "Обязательное поле")] [NotifyCanExecuteChangedFor(nameof(SaveCommand))] [MaxLength(14, ErrorMessage = "Максималная длина: 14")] private string _phoneNumber = null!;
     [ObservableProperty] [Required(ErrorMessage = "Обязательное поле")] [NotifyCanExecuteChangedFor(nameof(SaveCommand))] [RegularExpression(@"^\d{12}$", ErrorMessage = "ИНН должен содержать 12 цифр")] private string _inn = null!;
 
     [ObservableProperty] [Required(ErrorMessage = "Обязательное поле")] [NotifyCanExecuteChangedFor(nameof(SaveCommand))] [RegularExpression(@"^\d{4}$", ErrorMessage = "Формат: 1234")] private string _passportSerial = null!;

@@ -33,31 +33,39 @@ public partial class UserEmployeeViewModel: ViewModelPagination<Employee>
         _ = UpdatePaginationCollection();
     }
 
-    public async Task InitializeAsync()
-    {
-    }
 
     protected override async Task UpdatePaginationCollection()
     {
         await Task.Delay(300);
 
-        Expression<Func<Employee, bool>> dbFilter = (e) =>
-            e.FirstName.Contains(NameFilter)
-            || e.LastName.Contains(NameFilter)
-            || e.MiddleName.Contains(NameFilter);
+        Expression<Func<Employee, bool>> dbFilter = e =>
+            e.FirstName.Contains(NameFilter) ||
+            e.LastName.Contains(NameFilter) ||
+            e.MiddleName.Contains(NameFilter);
 
-        var resource = await _useCase.GetAllPagesAsync(SelectedPage, SelectedPageSize, dbFilter);
-        await HandleResource(
-            resource,
-            pagination =>
+        var resource = await _useCase.GetAllAsync(dbFilter);
+
+        await HandleResource(resource, employees =>
+        {
+            var filtered = employees
+                .Where(e => e.Status == SelectedEmployeeStatus)
+                .ToList();
+
+            var paged = filtered
+                .Skip((SelectedPage - 1) * SelectedPageSize)
+                .Take(SelectedPageSize)
+                .ToList();
+
+            UpdateObservableCollection(Employees, paged);
+
+            Pagination = new PaginationModel<Employee>
             {
-                var filteredItems = pagination.Items
-                    .Where(e => e.Status == SelectedEmployeeStatus)
-                    .ToList();
-
-                UpdateObservableCollection(Employees, filteredItems);
-                Pagination = pagination;
-            } );
+                Count = filtered.Count,
+                Items = paged,
+                Page = SelectedPage,
+                PageSize = SelectedPageSize
+            };
+        });
     }
 
     [RelayCommand]

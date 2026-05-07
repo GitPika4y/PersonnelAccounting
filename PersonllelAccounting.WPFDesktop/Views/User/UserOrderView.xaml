@@ -20,9 +20,14 @@
 
 
 	    <components:PaginationControl Grid.Row="1">
-            <StackPanel>
-                <!--FILTERS-->
-                <StackPanel Orientation="Horizontal">
+            <Grid>
+	            <Grid.RowDefinitions>
+		            <RowDefinition Height="Auto"/>
+		            <RowDefinition Height="*"/>
+	            </Grid.RowDefinitions>
+	            <!--FILTERS-->
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal">
                     <TextBox Text="{Binding EmployeeNameFilter, UpdateSourceTrigger=PropertyChanged}"
                              md:HintAssist.Hint="Поиск по сотруднику"
                              Margin="0 0 10 0"/>
@@ -39,7 +44,7 @@
                 </StackPanel>
                 
                 <!--CONTENT-->
-				<ScrollViewer>
+				<ScrollViewer Grid.Row="1">
 					<ListBox ItemsSource="{Binding Orders}">
 						<ListBox.ItemsPanel>
 							<ItemsPanelTemplate>
@@ -55,7 +60,7 @@
 						</ListBox.ItemTemplate>
 					</ListBox>
 				</ScrollViewer>
-            </StackPanel>
+            </Grid>
         </components:PaginationControl>
 
 

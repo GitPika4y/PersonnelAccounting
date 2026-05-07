@@ -54,27 +54,20 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
         await Task.Delay(500);
 
         Expression<Func<Order, bool>> dbFilter = o =>
-        // Тип (опционально)
-        (SelectedOrderType == null || o.Type == SelectedOrderType)
-
-        // Дата начала (опционально)
-        && (!StartDateFilter.HasValue || o.StartDate >= StartDateFilter.Value)
-
-        // Дата окончания (опционально)
-        && (!EndDateFilter.HasValue || (o.EndDate.HasValue && o.EndDate <= EndDateFilter.Value))
-
-        // Поиск по сотруднику
-        && (
-            string.IsNullOrWhiteSpace(EmployeeNameFilter)
-            || (
-                o.Employee != null &&
-                (
-                    o.Employee.FirstName.Contains(EmployeeNameFilter)
-                    || o.Employee.LastName.Contains(EmployeeNameFilter)
-                    || o.Employee.MiddleName.Contains(EmployeeNameFilter)
+            (SelectedOrderType == null || o.Type == SelectedOrderType)
+            && (!StartDateFilter.HasValue || o.StartDate >= StartDateFilter.Value)
+            && (!EndDateFilter.HasValue || (o.EndDate.HasValue && o.EndDate <= EndDateFilter.Value))
+            && (
+                string.IsNullOrWhiteSpace(EmployeeNameFilter)
+                || (
+                    o.Employee != null &&
+                    (
+                        o.Employee.FirstName.Contains(EmployeeNameFilter)
+                        || o.Employee.LastName.Contains(EmployeeNameFilter)
+                        || o.Employee.MiddleName.Contains(EmployeeNameFilter)
+                    )
                 )
-            )
-        );
+            );
 
         var resource = await _orderUseCase.GetAllAsync(SelectedPage, SelectedPageSize, dbFilter);
         await HandleResource(

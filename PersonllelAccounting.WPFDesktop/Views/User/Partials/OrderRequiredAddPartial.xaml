@@ -10,15 +10,15 @@
                                   Margin="0 15"
                                   UseTextBox="False"/>
 
-        <DatePicker SelectedDate="{Binding Date}"
+        <DatePicker SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
                     Margin="0 15"
                     md:HintAssist.Hint="Дата создания приказа"/>
 
-        <DatePicker SelectedDate="{Binding StartDate}"
+        <DatePicker SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
                     Margin="0 15"
                     md:HintAssist.Hint="Дата вступления приказа в силу"/>
 
-        <DatePicker SelectedDate="{Binding EndDate}"
+        <DatePicker SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
                     Margin="0 15"
                     md:HintAssist.Hint="Дата окончания силы приказа"/>
     </StackPanel>
