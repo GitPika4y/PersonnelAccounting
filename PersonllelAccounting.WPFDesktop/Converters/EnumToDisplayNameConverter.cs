@@ -11,7 +11,7 @@ public class EnumToDisplayNameConverter: IValueConverter
         if (value is Enum enumValue)
             return enumValue.GetDisplayName();
 
-        return value?.ToString() ?? "Error on 'EnumToDisplayNameConverter' (value was null)";
+        return value?.ToString() ?? "---";
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
