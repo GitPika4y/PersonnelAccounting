@@ -27,17 +27,29 @@
 		            <RowDefinition Height="*"/>
 	            </Grid.RowDefinitions>
 
+	            <!-- FILTERS -->
 	            <StackPanel Grid.Row="0"
-	                        Orientation="Horizontal">
+	                        Orientation="Vertical">
+		            <CheckBox IsChecked="{Binding UseFilters}"
+		                      Content="Фильтры"
+		                      Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+		                      FontSize="18"
+		                      Margin="0 0 0 10"/>
+
+					<StackPanel Orientation="Horizontal"
+					            Visibility="{Binding UseFilters,
+									Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBox Text="{Binding NameFilter, UpdateSourceTrigger=PropertyChanged}"
                              md:HintAssist.Hint="Поиск по имени"
                              Margin="0 0 10 0"/>
-                    
+
                     <components:EnumComboBox ItemsSource="{Binding EmployeeStatuses}"
                                              SelectedItem="{Binding SelectedEmployeeStatus}"
                                              md:HintAssist.Hint="Статус сотрудника"
                                              Margin="0 0 10 0"/>
+					</StackPanel>
                 </StackPanel>
+
                 <ScrollViewer Grid.Row="1"
                               VerticalScrollBarVisibility="Auto">
                     <ListBox ItemsSource="{Binding Employees}"

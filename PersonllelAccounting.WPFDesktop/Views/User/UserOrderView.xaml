@@ -25,22 +25,33 @@
 		            <RowDefinition Height="Auto"/>
 		            <RowDefinition Height="*"/>
 	            </Grid.RowDefinitions>
+
 	            <!--FILTERS-->
                 <StackPanel Grid.Row="0"
-                            Orientation="Horizontal">
-                    <TextBox Text="{Binding EmployeeNameFilter, UpdateSourceTrigger=PropertyChanged}"
-                             md:HintAssist.Hint="Поиск по сотруднику"
-                             Margin="0 0 10 0"/>
-                    <components:EnumComboBox ItemsSource="{Binding OrderTypes}"
-                                             SelectedItem="{Binding SelectedOrderType}"
-                                             md:HintAssist.Hint="Тип приказа"
-                                             Margin="0 0 10 0"/>
-                    <DatePicker SelectedDate="{Binding StartDateFilter, UpdateSourceTrigger=PropertyChanged}"
-                                md:HintAssist.Hint="Дата создания"
-                                Margin="0 0 10 0"/>
-                    <DatePicker SelectedDate="{Binding EndDateFilter, UpdateSourceTrigger=PropertyChanged}"
-                                md:HintAssist.Hint="Дата окончания"
-                                Margin="0 0 10 0"/>
+                            Orientation="Vertical">
+	                <CheckBox IsChecked="{Binding UseFilters}"
+	                          Content="Фильтры"
+	                          Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+	                          FontSize="18"
+	                          Margin="0 0 0 10"/>
+
+	                <StackPanel Orientation="Horizontal"
+	                            Visibility="{Binding UseFilters,
+									Converter={StaticResource BoolToVisibilityConverter}}">
+		                <TextBox Text="{Binding EmployeeNameFilter, UpdateSourceTrigger=PropertyChanged}"
+		                         md:HintAssist.Hint="Поиск по сотруднику"
+		                         Margin="0 0 10 0"/>
+	                    <components:EnumComboBox ItemsSource="{Binding OrderTypes}"
+	                                             SelectedItem="{Binding SelectedOrderType}"
+	                                             md:HintAssist.Hint="Тип приказа"
+	                                             Margin="0 0 10 0"/>
+	                    <DatePicker SelectedDate="{Binding StartDateFilter, UpdateSourceTrigger=PropertyChanged}"
+	                                md:HintAssist.Hint="Дата создания"
+	                                Margin="0 0 10 0"/>
+	                    <DatePicker SelectedDate="{Binding EndDateFilter, UpdateSourceTrigger=PropertyChanged}"
+	                                md:HintAssist.Hint="Дата окончания"
+	                                Margin="0 0 10 0"/>
+	                </StackPanel>
                 </StackPanel>
                 
                 <!--CONTENT-->

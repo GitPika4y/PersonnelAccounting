@@ -25,6 +25,8 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
     [ObservableProperty] private DateTime? _startDateFilter = null;
     [ObservableProperty] private DateTime? _endDateFilter = null;
 
+    [ObservableProperty] private bool _useFilters;
+
     public UserOrderViewModel(
         IEmployeeUseCase employeeUseCase,
         IOrderTypeService orderTypeService,
@@ -44,6 +46,7 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
     partial void OnEmployeeNameFilterChanged(string value) => _ = UpdatePaginationCollection();
     partial void OnStartDateFilterChanged(DateTime? value) => _ = UpdatePaginationCollection();
     partial void OnEndDateFilterChanged(DateTime? value) => _ = UpdatePaginationCollection();
+    partial void OnUseFiltersChanged(bool value) => _ = UpdatePaginationCollection();
 
     public async Task InitializeAsync()
     {
@@ -53,21 +56,26 @@ public partial class UserOrderViewModel: ViewModelPagination<Order>
     {
         await Task.Delay(500);
 
-        Expression<Func<Order, bool>> dbFilter = o =>
-            (SelectedOrderType == null || o.Type == SelectedOrderType)
-            && (!StartDateFilter.HasValue || o.StartDate >= StartDateFilter.Value)
-            && (!EndDateFilter.HasValue || (o.EndDate.HasValue && o.EndDate <= EndDateFilter.Value))
-            && (
-                string.IsNullOrWhiteSpace(EmployeeNameFilter)
-                || (
-                    o.Employee != null &&
-                    (
-                        o.Employee.FirstName.Contains(EmployeeNameFilter)
-                        || o.Employee.LastName.Contains(EmployeeNameFilter)
-                        || o.Employee.MiddleName.Contains(EmployeeNameFilter)
+        Expression<Func<Order, bool>>? dbFilter = null;
+
+        if (UseFilters)
+        {
+            dbFilter = o =>
+                (SelectedOrderType == null || o.Type == SelectedOrderType)
+                && (!StartDateFilter.HasValue || o.StartDate >= StartDateFilter.Value)
+                && (!EndDateFilter.HasValue || (o.EndDate.HasValue && o.EndDate <= EndDateFilter.Value))
+                && (
+                    string.IsNullOrWhiteSpace(EmployeeNameFilter)
+                    || (
+                        o.Employee != null &&
+                        (
+                            o.Employee.FirstName.Contains(EmployeeNameFilter)
+                            || o.Employee.LastName.Contains(EmployeeNameFilter)
+                            || o.Employee.MiddleName.Contains(EmployeeNameFilter)
+                        )
                     )
-                )
-            );
+                );
+        }
 
         var resource = await _orderUseCase.GetAllAsync(SelectedPage, SelectedPageSize, dbFilter);
         await HandleResource(
