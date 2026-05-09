@@ -6,7 +6,7 @@
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              Name="Root"
              >
-    <Grid>
+    <Grid Margin="20">
 	    <Grid.RowDefinitions>
 		    <RowDefinition Height="AUTO"/>
 		    <RowDefinition Height="*"/>
@@ -75,8 +75,22 @@
         </components:PaginationControl>
 
 
-        <Button Grid.Row="2"
-                Content="Создать приказ"
-                Command="{Binding AddOrderCommand}"/>
+	    <Grid Grid.Row="2">
+		    <Grid.ColumnDefinitions>
+			    <ColumnDefinition/>
+			    <ColumnDefinition/>
+		    </Grid.ColumnDefinitions>
+
+		    <Button Grid.Column="0"
+		            Content="Создать приказ"
+		            Command="{Binding AddOrderCommand}"
+		            Margin="0 0 5 0"/>
+
+		    <Button Grid.Column="1"
+		            Content="Составить отчет"
+		            Command="{Binding BuildReportCommand}"
+		            Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}"
+		            Margin="5 0 0 0"/>
+	    </Grid>
     </Grid>
 </UserControl>

@@ -6,6 +6,11 @@ public static class DateTimeExtensions
 {
     public static string ToDateString(this DateTime date)
     {
-        return date.ToString("dd.MM.yyyy dddd", new CultureInfo("ru-RU"));
+        return date.ToString("dd.MM.yyyy");
+    }
+
+    public static string ToDateString(this DateTime? date)
+    {
+        return date?.ToString("dd.MM.yyyy") ?? "Бессрочно";
     }
 }

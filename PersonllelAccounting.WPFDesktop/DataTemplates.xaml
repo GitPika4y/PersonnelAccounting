@@ -81,6 +81,14 @@
 	    <viewsUser:OrderDetailModalView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vmUser:OrderReportExportModalViewModel}">
+	    <viewsUser:OrderReportExportModalView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmUser:EmployeeReportExportModalViewModel}">
+	    <viewsUser:EmployeeReportExportModalView/>
+    </DataTemplate>
+
     <!-- MODALS -->
     <DataTemplate DataType="{x:Type vmModal:MessageModalViewModel}">
         <viewsModal:MessageModalView/>

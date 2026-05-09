@@ -81,8 +81,23 @@
         </components:PaginationControl>
 
         <!-- ACTION BUTTONS -->
-        <Button Grid.Row="2"
-                Content="Добавить сотрудника"
-                Command="{Binding AddEmployeeCommand}"/>
+        <Grid Grid.Row="2">
+	        <Grid.ColumnDefinitions>
+		        <ColumnDefinition/>
+		        <ColumnDefinition/>
+	        </Grid.ColumnDefinitions>
+
+	        <Button Grid.Column="0"
+		        Content="Добавить сотрудника"
+		        Command="{Binding AddEmployeeCommand}"
+		        Margin="0 0 5 0"/>
+
+	        <Button Grid.Column="1"
+		        Content="Соствить отчет"
+		        Command="{Binding BuildReportCommand}"
+		        Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}"
+		        Margin="5 0 0 0"
+		        />
+        </Grid>
     </Grid>
 </UserControl>

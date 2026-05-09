@@ -44,5 +44,7 @@ public static class DiService
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<IWindowService, WindowService>();
         services.AddSingleton<IRememberMeService, RememberMeService>();
+        services.AddSingleton<IOrderReportExportService, OrderReportExportService>();
+        services.AddSingleton<IEmployeeReportExportService, EmployeeReportExportService>();
     }
 }
