@@ -49,6 +49,11 @@
 
         <components:KeyValueHorizontalGrid Key="Статус"
                                            Value="{Binding Employee.Status,
-                                            Converter={StaticResource EnumToDisplayNameConverter}}"/>
+                                            Converter={StaticResource EnumToDisplayNameConverter}}"
+                                           Margin="0 0 0 10"/>
+
+        <components:KeyValueHorizontalGrid Key="ИНН"
+                                           Value="{Binding Employee.Inn}"/>
+
     </StackPanel>
 </UserControl>
