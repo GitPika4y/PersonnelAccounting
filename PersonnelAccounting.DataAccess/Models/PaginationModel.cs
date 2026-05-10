@@ -24,6 +24,17 @@ public class PaginationModel<T> where T : EntityModel
         }
     }
 
+    public int PagesCount
+    {
+        get
+        {
+            if (PageSize <= 0)
+                return 0;
+
+            return (int)Math.Ceiling((double)Count / PageSize);
+        }
+    }
+
     public bool HasPrevious => Page > 1;
     public bool HasNext => Page < Pages.Count();
 }

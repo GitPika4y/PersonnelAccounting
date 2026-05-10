@@ -1,7 +1,6 @@
-﻿using System.Windows.Input;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
 
-namespace WPF_Desktop.ViewModels;
+namespace WPF_Desktop.Utils;
 
 public class SideBarItem
 {

@@ -34,36 +34,48 @@
                                       UseTextBox="False"/>
 
             <!-- NAVIGATION BUTTONS -->
-            <ItemsControl Grid.Row="0"
-                          Grid.RowSpan="2"
-                          Grid.Column="1"
-                          HorizontalAlignment="Right"
-                          ItemsSource="{Binding Pagination.Pages}">
+            <StackPanel Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="1">
+	            <TextBlock Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+	                       HorizontalAlignment="Right"
+	                       Margin="0  0 0 10">
+		            <TextBlock.Text>
+			            <MultiBinding StringFormat="Страница {0} из {1}">
+				            <Binding Path="Pagination.Page"/>
+				            <Binding Path="Pagination.PagesCount"/>
+			            </MultiBinding>
+		            </TextBlock.Text>
+	            </TextBlock>
 
-	            <ItemsControl.ItemsPanel>
-		            <ItemsPanelTemplate>
-			            <StackPanel Orientation="Horizontal"/>
-		            </ItemsPanelTemplate>
-	            </ItemsControl.ItemsPanel>
+	            <ItemsControl HorizontalAlignment="Right"
+	                          ItemsSource="{Binding Pagination.Pages}">
 
-	            <ItemsControl.ItemTemplate>
-		            <DataTemplate>
-			            <Button Content="{Binding}"
-			                    CommandParameter="{Binding}"
-			                    Margin="5 0"
-			                    Command="{Binding DataContext.ChangePageCommand,
-                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}">
-				            <Button.IsEnabled>
-					            <MultiBinding Converter="{StaticResource InvertEqualityToBoolConverter}">
-						            <Binding Path="DataContext.SelectedPage"
-						                     RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
-						            <Binding/>
-					            </MultiBinding>
-				            </Button.IsEnabled>
-			            </Button>
-		            </DataTemplate>
-	            </ItemsControl.ItemTemplate>
-            </ItemsControl>
+		            <ItemsControl.ItemsPanel>
+			            <ItemsPanelTemplate>
+				            <StackPanel Orientation="Horizontal"/>
+			            </ItemsPanelTemplate>
+		            </ItemsControl.ItemsPanel>
+
+		            <ItemsControl.ItemTemplate>
+			            <DataTemplate>
+				            <Button Content="{Binding}"
+				                    CommandParameter="{Binding}"
+				                    Margin="5 0"
+				                    Command="{Binding DataContext.ChangePageCommand,
+	                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+					            <Button.IsEnabled>
+						            <MultiBinding Converter="{StaticResource InvertEqualityToBoolConverter}">
+							            <Binding Path="DataContext.SelectedPage"
+							                     RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
+							            <Binding/>
+						            </MultiBinding>
+					            </Button.IsEnabled>
+				            </Button>
+			            </DataTemplate>
+		            </ItemsControl.ItemTemplate>
+	            </ItemsControl>
+            </StackPanel>
 
             <!-- PAGE SIZE -->
             <StackPanel Grid.Row="1"
